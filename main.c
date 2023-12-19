@@ -8,18 +8,15 @@
 #include <string.h>
 #define BUFFERMAX 200
 
-
-int main(void)
-{
-	// Vezi probleme la lungimile bufferelor
-	char cmd_buffer[BUFFERMAX], cmd[15], path[30], param[15];
-	int coords[4], angle;
-	fgets(cmd_buffer, BUFFERMAX, stdin);
+void parse_command(char buff[], char cmd[], char path[], char params[], int *angle, int coords[], int *ALL) {
+	int lenght = strlen(buff) - 1;
+	printf("%d\n", lenght);
+	buff[lenght] = '\0';
 	char delims[] = " ";
-	char *p = strtok(cmd_buffer, delims);
+	char *p = strtok(buff, delims);
 	int field = 0;
 	while (p) {
-		if(field == 0) {
+		if (field == 0) {
 			strcpy(cmd, p);
 			field++;
 			p = strtok(NULL, delims);
@@ -32,33 +29,79 @@ int main(void)
 			continue;
 		}
 		if (field == 1 && strcmp(cmd, "SELECT") == 0) {
-			int x1, x2, y1, y2;
-			int MODE = 0;
 			if (strcmp(p, "ALL") == 0) {
-				MODE = 1;
+				strcpy(params, p);
+				*ALL = 1;
 				field++;
 				p = strtok(NULL, delims);
 				continue;
 			} else {
-				x1 = atoi(p);
+				coords[0] = atoi(p); // x1
 				field++;
 				p = strtok(NULL, delims);
-				y1 = atoi(p);
+				coords[1] = atoi(p); // y1
 				field++;
 				p = strtok(NULL, delims);
-				x2 = atoi(p);
+				coords[2] = atoi(p); // x2
 				field++;
 				p = strtok(NULL, delims);
-				y2 = atoi(p);
+				coords[3] = atoi(p); // y2
 				field++;
-				printf("%d %d %d %d\n", x1, y1, x2, y2);
+				printf("%d %d %d %d\n", coords[0], coords[1], coords[2], coords[3]);
 				p = strtok(NULL, delims);
 				continue;
 			}
 		}
+		if (field == 1 && strcmp(cmd, "HISTOGRAM") == 0) {
+			coords[0] = atoi(p); // x
+			field++;
+			p = strtok(NULL, delims);
+			coords[1] = atoi(p); // y
+			field++;
+			p = strtok(NULL, delims);
+			continue;
+		}
+		if (field ==  1 && strcmp(cmd, "ROTATE") == 0) {
+			*angle = 0;
+			*angle = atoi(p);
+			field++;
+			p = strtok(NULL, delims);
+			continue;
+		}
+		if (field == 1 && strcmp(cmd, "APPLY") == 0) {
+			strcpy(params, p);
+			field++;
+			p = strtok(NULL, delims);
+			continue;
+		}
+		if (field == 1 && strcmp(cmd, "SAVE") == 0) {
+			strcpy(path, p);
+			field++;
+			p = strtok(NULL, delims);
+		}
 		field++;
 		p = strtok(NULL, delims);
 	}
+}
+
+int main(void)
+{
+	// Vezi probleme la lungimile bufferelor
+	char cmd_buffer[BUFFERMAX], cmd[15], path[30], params[15];
+	int angle = 0, selection_coords[4], ALL = 0;
+	while (1) {
+		fgets(cmd_buffer, BUFFERMAX, stdin);
+		parse_command(cmd_buffer, cmd, path, params, &angle, selection_coords, &ALL);
+		if (!(strcmp(cmd, "LOAD"))) {
+			FILE *f = fopen(path, "rb");
+
+			fclose(f);
+		}
+		if (!(strcmp(cmd, "EXIT"))) {
+			break;
+		}
+	}
+	printf("angle: %d\n", angle);
 	puts(cmd);
 	puts(path);
 	return 0;
