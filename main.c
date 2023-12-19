@@ -6,6 +6,7 @@
 #include <malloc.h>
 #include <stdlib.h>
 #include <string.h>
+#include "img_ops.c"
 #define BUFFERMAX 200
 
 void parse_command(char buff[], char cmd[], char path[], char params[], int *angle, int coords[], int *ALL) {
@@ -89,13 +90,21 @@ int main(void)
 	// Vezi probleme la lungimile bufferelor
 	char cmd_buffer[BUFFERMAX], cmd[15], path[30], params[15];
 	int angle = 0, selection_coords[4], ALL = 0;
+	struct _pgmdata pgm_image;
 	while (1) {
 		fgets(cmd_buffer, BUFFERMAX, stdin);
 		parse_command(cmd_buffer, cmd, path, params, &angle, selection_coords, &ALL);
 		if (!(strcmp(cmd, "LOAD"))) {
-			FILE *f = fopen(path, "rb");
+			readfile(path, &pgm_image);
+			
+			for (int i = 0; i < 20; i++) {
+				for (int j = 0; j < 20; j++) {
+					printf("%d ", pgm_image.image[i][j]);
+				}
+				printf("\n");
+			}
+			deallocate_matrix(pgm_image.image, pgm_image.height);
 
-			fclose(f);
 		}
 		if (!(strcmp(cmd, "EXIT"))) {
 			break;

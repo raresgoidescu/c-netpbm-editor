@@ -16,10 +16,12 @@ int **allocate_matrix(int n, int m) {
 	for (int i = 0; i < n; ++i) {
 		ptr[i] = malloc(m * sizeof(int));
 		handle_null_pointer(ptr[i]);
-		for (int j = 0; j < i; j++) {
-			free(ptr[j]);
+		if (!ptr) {
+			for (int j = 0; j < i; j++) {
+				free(ptr[j]);
+			}
+			free(ptr);
 		}
-		free(ptr);
 	}
 
 	return ptr;
