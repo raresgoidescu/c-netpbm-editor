@@ -1,5 +1,6 @@
 #include <ctype.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "img_struct.h"
 #include "mem_ops.c"
@@ -10,8 +11,12 @@
 //     P5 |    P2 | 	 .pgm
 //     P6 |    P3 | 	 .ppm
 
+/* Pot da merge celor doua functii daca mai adaug un flag (color = 1/0) */
+
 void nonppm_load(FILE *f_ptr, const int height, const int width, const int binary, img_data *data)
 {
+    data->pixel_map = allocate_matrix(height, width);
+
     if (binary)
         for (int i = 0; i < height; ++i) {
             for (int  j = 0; j < width; ++j) {
@@ -30,9 +35,11 @@ void nonppm_load(FILE *f_ptr, const int height, const int width, const int binar
 
 void ppm_load(FILE *f_ptr, const int height, const int width, const int binary, img_data *data)
 {
+    data->pixel_map = allocate_matrix(height, width);
+
     if (binary)
         for (int i = 0; i < height; ++i) {
-            for (int  j = 0; j < width * 3; ++j) {
+            for (int  j = 0; j < width; ++j) {
                 int r = fgetc(f_ptr);
                 int g = fgetc(f_ptr);
                 int b = fgetc(f_ptr);
@@ -42,7 +49,7 @@ void ppm_load(FILE *f_ptr, const int height, const int width, const int binary, 
 
     if (!binary)
         for (int i = 0; i < height; ++i) {
-            for (int  j = 0; j < width * 3; ++j) {
+            for (int  j = 0; j < width; ++j) {
                 int r, g, b;
                 fscanf(f_ptr, "%d%d%d", &r, &g, &b);
                 data->pixel_map[i][j] = data->alpha << 24 | b << 16 | g << 8 | r;
@@ -55,9 +62,10 @@ void load_image(const char *path, const char *mword,
 {
     FILE *f;
     int binary = 0;
-    if (!(strcmp(mword, "P4")) ||
-        !(strcmp(mword, "P5")) ||
-        !(strcmp(mword, "P6"))) {
+    puts(mword);
+    if ((strcmp(mword, "P4") == 0) ||
+        (strcmp(mword, "P5") == 0) ||
+        (strcmp(mword, "P6") == 0)) {
 
         // Binary File (Raw)
         binary = 1;
@@ -65,9 +73,9 @@ void load_image(const char *path, const char *mword,
         if (!f)
             perr("Eroare la deschiderea fisierului\n");
 
-    } else if (!(strcmp(mword, "P1")) ||
-               !(strcmp(mword, "P2")) ||
-               !(strcmp(mword, "P3"))) {
+    } else if ((strcmp(mword, "P1") == 0) ||
+               (strcmp(mword, "P2") == 0) ||
+               (strcmp(mword, "P3") == 0)) {
 
         // ASCII File (Plain text)
         f = fopen(path, "r");

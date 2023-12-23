@@ -2,7 +2,7 @@
 
 void readMagicWord(const char *path, char *mword) {
 	FILE *f = fopen(path, "r");
-    fgets(mword, sizeof(mword), f);
+    fscanf(f, "%s\n", mword);
     fclose(f);
 	puts(mword);
 }

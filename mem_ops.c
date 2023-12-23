@@ -8,13 +8,14 @@ void handle_null_pointer(void *p) {
 	}
 }
 
-int **allocate_matrix(int n, int m) {
-	int **ptr = NULL;
-	ptr = malloc(n * sizeof(int *));
+/* O pot face sa fie mai generala (sa mearga si pentru u, si pt d si pt lf) */
+unsigned int **allocate_matrix(int n, int m) {
+	unsigned int **ptr = NULL;
+	ptr = malloc(n * sizeof(unsigned int *));
 	handle_null_pointer(ptr);
 
 	for (int i = 0; i < n; ++i) {
-		ptr[i] = malloc(m * sizeof(int));
+		ptr[i] = malloc(m * sizeof(unsigned int));
 		handle_null_pointer(ptr[i]);
 		if (!ptr) {
 			for (int j = 0; j < i; j++) {
@@ -27,7 +28,7 @@ int **allocate_matrix(int n, int m) {
 	return ptr;
 }
 
-void deallocate_matrix(int **ptr, int n) {
+void deallocate_matrix(unsigned int **ptr, int n) {
 	for (int i = 0; i < n; i++)
 		free(ptr[i]);
 	free(ptr);
