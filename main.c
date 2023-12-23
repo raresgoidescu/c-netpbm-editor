@@ -97,8 +97,8 @@ int main(void)
 		if (!(strcmp(cmd, "LOAD"))) {
 			readfile(path, &pgm_image);
 			
-			for (int i = 0; i < 20; i++) {
-				for (int j = 0; j < 20; j++) {
+			for (int i = 0; i < 1; i++) {
+				for (int j = 0; j < pgm_image.width; j++) {
 					printf("%d ", pgm_image.image[i][j]);
 				}
 				printf("\n");
