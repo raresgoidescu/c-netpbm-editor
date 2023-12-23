@@ -1,12 +1,11 @@
 // Copyright Rares-Stefan Goidescu 312CAb 2023-2024
 #include <stddef.h>
 #include <stdio.h>
-#include <limits.h>
-#include <math.h>
-#include <malloc.h>
 #include <stdlib.h>
 #include <string.h>
-#include "img_ops.c"
+#include "whatfile.c"
+#include "ppm.h"
+#include "pgm.h"
 #define BUFFERMAX 200
 
 void parse_command(char buff[], char cmd[], char path[], char params[], int *angle, int coords[], int *ALL) {
@@ -90,27 +89,24 @@ int main(void)
 	// Vezi probleme la lungimile bufferelor
 	char cmd_buffer[BUFFERMAX], cmd[15], path[30], params[15];
 	int angle = 0, selection_coords[4], ALL = 0;
-	struct _pgmdata pgm_image;
+	pgm_image pgm;
 	while (1) {
 		fgets(cmd_buffer, BUFFERMAX, stdin);
 		parse_command(cmd_buffer, cmd, path, params, &angle, selection_coords, &ALL);
 		if (!(strcmp(cmd, "LOAD"))) {
-			readfile(path, &pgm_image);
+			char magic_word[3];
+			readMagicWord(path, magic_word);
+			// Binary | ASCII | extension
+			//     P4 |    P1 | 	 .pbm
+			//     P5 |    P2 | 	 .pgm
+			//     P6 |    P3 | 	 .ppm
 			
-			for (int i = 0; i < 1; i++) {
-				for (int j = 0; j < pgm_image.width; j++) {
-					printf("%d ", pgm_image.image[i][j]);
-				}
-				printf("\n");
-			}
-			deallocate_matrix(pgm_image.image, pgm_image.height);
 
 		}
 		if (!(strcmp(cmd, "EXIT"))) {
 			break;
 		}
 	}
-	printf("angle: %d\n", angle);
 	puts(cmd);
 	puts(path);
 	return 0;
