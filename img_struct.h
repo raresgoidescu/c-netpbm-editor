@@ -1,5 +1,5 @@
-#ifndef PPM_H
-#define PPM_H
+#ifndef img_struct
+#define img_struct
 
 typedef struct img_data {
 	int width;
@@ -8,4 +8,4 @@ typedef struct img_data {
 	unsigned int **pixel_map;
 } img_data;
 
-#endif /* PPM_H */
+#endif /* img_struct */

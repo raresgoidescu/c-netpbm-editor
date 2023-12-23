@@ -7,7 +7,7 @@
 /* Trebuie sa validez path-ul si daca este .ppm/.pgm/.pbm */
 void parse_command(char buff[], char cmd[], char path[], char params[], int *angle, int coords[], int *ALL, int *loaded) {
 	int lenght = strlen(buff) - 1;
-	printf("%d\n", lenght);
+	// printf("%d\n", lenght);
 	buff[lenght] = '\0';
 	char delims[] = " ";
 	char *p = strtok(buff, delims);
@@ -52,8 +52,8 @@ void parse_command(char buff[], char cmd[], char path[], char params[], int *ang
 				p = strtok(NULL, delims);
 				coords[3] = atoi(p); // y2
 				field++;
-				printf("%d %d %d %d\n", coords[0], coords[1], coords[2], coords[3]);
-				ALL = 0;
+				// printf("%d %d %d %d\n", coords[0], coords[1], coords[2], coords[3]);
+				*ALL = 0;
 				p = strtok(NULL, delims);
 				continue;
 			}
