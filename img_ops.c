@@ -1,6 +1,7 @@
 #include "img_struct.h"
 #include <stdio.h>
 
+/* Nu merge pentru pbm */
 void histogram(img_data data, int from_x, int from_y, int to_x, int to_y, int astks, int bins, int colored)
 {
     /*
@@ -15,13 +16,13 @@ void histogram(img_data data, int from_x, int from_y, int to_x, int to_y, int as
     for (int i = 0; i < 256; i++)
         freq[i] = 0;
 
-    puts("Merge pana aici(1)");
+    // puts("Merge pana aici(1)");
     for (int i = from_y; i < to_y; ++i) {
         for (int j = from_x; j < to_x; ++j) {
             freq[data.pixel_map[i][j]]++;
         }
     }
-    puts("Merge pana aici(2)");
+    // puts("Merge pana aici(2)");
 
     // S-AR PUTEA SA FIE MEDIE --- SUM / (256 / bin)
     for (int i = 0; i < 256; i += 256 / bins) {
