@@ -5,7 +5,7 @@
 /* Trebuie sa validez si comenzile cu parametri, in caz ca parametrii nu sunt valizi */
 /* Trebuie sa maresc lungimile bufferelor */
 /* Trebuie sa validez path-ul si daca este .ppm/.pgm/.pbm */
-void parse_command(char buff[], char cmd[], char path[], char params[], int *angle, int coords[], int *ALL, int *loaded) {
+void parse_command(char buff[], char cmd[], char path[], char params[], int *angle, int coords[], int *ALL, int *loaded, int *astks, int *bins) {
 	int lenght = strlen(buff) - 1;
 	// printf("%d\n", lenght);
 	buff[lenght] = '\0';
@@ -58,10 +58,10 @@ void parse_command(char buff[], char cmd[], char path[], char params[], int *ang
 				continue;
 			}
 		} else if (field == 1 && strcmp(cmd, "HISTOGRAM") == 0) {
-			coords[0] = atoi(p); // x
+			*astks = atoi(p); // x
 			field++;
 			p = strtok(NULL, delims);
-			coords[1] = atoi(p); // y
+			*bins = atoi(p); // y
 			field++;
 			p = strtok(NULL, delims);
 			continue;
