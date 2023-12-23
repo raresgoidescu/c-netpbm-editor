@@ -13,16 +13,18 @@ int main(void)
 {
 	// Vezi probleme la lungimile bufferelor
 	char cmd_buffer[BUFFERMAX], cmd[15], path[30], params[15];
-	int angle = 0, selection_coords[4], ALL = 0;
+	int angle = 0, selection_coords[4], ALL = 1, loaded = 0;
 	img_data data;
 	while (1) {
 		int height, width;
 		fgets(cmd_buffer, BUFFERMAX, stdin);
-		parse_command(cmd_buffer, cmd, path, params, &angle, selection_coords, &ALL);
+		parse_command(cmd_buffer, cmd, path, params, &angle, selection_coords, &ALL, &loaded);
 		if (!(strcmp(cmd, "LOAD"))) {
+			puts(path);
 			char magic_word[3];
 			readMagicWord(path, magic_word);
 			// Binary | ASCII | extension
+			// -------+-------+----------
 			//     P4 |    P1 | 	 .pbm
 			//     P5 |    P2 | 	 .pgm
 			//     P6 |    P3 | 	 .ppm
@@ -35,7 +37,10 @@ int main(void)
 			deallocate_matrix(data.pixel_map, height);
 		}
 		if (!(strcmp(cmd, "EXIT"))) {
-			break;
+			if (loaded)
+				break;
+			else
+			 	printf("No image loaded\n");
 		}
 	}
 	puts(cmd);

@@ -2,7 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-void parse_command(char buff[], char cmd[], char path[], char params[], int *angle, int coords[], int *ALL) {
+/* Trebuie sa validez si comenzile cu parametri, in caz ca parametrii nu sunt valizi */
+/* Trebuie sa maresc lungimile bufferelor */
+/* Trebuie sa validez path-ul si daca este .ppm/.pgm/.pbm */
+void parse_command(char buff[], char cmd[], char path[], char params[], int *angle, int coords[], int *ALL, int *loaded) {
 	int lenght = strlen(buff) - 1;
 	printf("%d\n", lenght);
 	buff[lenght] = '\0';
@@ -12,17 +15,25 @@ void parse_command(char buff[], char cmd[], char path[], char params[], int *ang
 	while (p) {
 		if (field == 0) {
 			strcpy(cmd, p);
+			//puts(cmd);
+			//printf("***\n%d\n***\n", !strcmp(cmd, "LOAD"));
+			if (strcmp(cmd, "LOAD") && strcmp(cmd, "SELECT") && strcmp(cmd, "HISTOGRAM") &&
+				strcmp(cmd, "EQUALIZE") && strcmp(cmd, "ROTATE") && strcmp(cmd, "CROP") &&
+				strcmp(cmd, "APPLY") && strcmp(cmd, "SAVE") && strcmp(cmd, "EXIT")) {
+
+				printf("Invalid command\n");
+				return;
+			}
 			field++;
 			p = strtok(NULL, delims);
 			continue;
-		}
-		if (field == 1 && strcmp(cmd, "LOAD") == 0) {
+		} else if (field == 1 && strcmp(cmd, "LOAD") == 0) {
 			strcpy(path, p);
+			*loaded = 1;
 			field++;
 			p = strtok(NULL, delims);
 			continue;
-		}
-		if (field == 1 && strcmp(cmd, "SELECT") == 0) {
+		} else if (field == 1 && strcmp(cmd, "SELECT") == 0) {
 			if (strcmp(p, "ALL") == 0) {
 				strcpy(params, p);
 				*ALL = 1;
@@ -42,11 +53,11 @@ void parse_command(char buff[], char cmd[], char path[], char params[], int *ang
 				coords[3] = atoi(p); // y2
 				field++;
 				printf("%d %d %d %d\n", coords[0], coords[1], coords[2], coords[3]);
+				ALL = 0;
 				p = strtok(NULL, delims);
 				continue;
 			}
-		}
-		if (field == 1 && strcmp(cmd, "HISTOGRAM") == 0) {
+		} else if (field == 1 && strcmp(cmd, "HISTOGRAM") == 0) {
 			coords[0] = atoi(p); // x
 			field++;
 			p = strtok(NULL, delims);
@@ -54,21 +65,18 @@ void parse_command(char buff[], char cmd[], char path[], char params[], int *ang
 			field++;
 			p = strtok(NULL, delims);
 			continue;
-		}
-		if (field ==  1 && strcmp(cmd, "ROTATE") == 0) {
+		} else if (field ==  1 && strcmp(cmd, "ROTATE") == 0) {
 			*angle = 0;
 			*angle = atoi(p);
 			field++;
 			p = strtok(NULL, delims);
 			continue;
-		}
-		if (field == 1 && strcmp(cmd, "APPLY") == 0) {
+		} else if (field == 1 && strcmp(cmd, "APPLY") == 0) {
 			strcpy(params, p);
 			field++;
 			p = strtok(NULL, delims);
 			continue;
-		}
-		if (field == 1 && strcmp(cmd, "SAVE") == 0) {
+		} else if (field == 1 && strcmp(cmd, "SAVE") == 0) {
 			strcpy(path, p);
 			field++;
 			p = strtok(NULL, delims);

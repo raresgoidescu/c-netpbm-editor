@@ -7,11 +7,10 @@
 #include "err_handling.c"
 
 // Binary | ASCII | extension
+// -------+-------+----------
 //     P4 |    P1 | 	 .pbm
 //     P5 |    P2 | 	 .pgm
 //     P6 |    P3 | 	 .ppm
-
-/* Pot da merge celor doua functii daca mai adaug un flag (color = 1/0) */
 
 void nonppm_load(FILE *f_ptr, const int height, const int width, const int binary, img_data *data)
 {
@@ -57,6 +56,8 @@ void ppm_load(FILE *f_ptr, const int height, const int width, const int binary, 
         }
 }
 
+
+
 void load_image(const char *path, const char *mword,
                 img_data *data, int *height, int *width)
 {
@@ -70,26 +71,28 @@ void load_image(const char *path, const char *mword,
         // Binary File (Raw)
         binary = 1;
         f = fopen(path, "rb");
-        if (!f)
-            perr("Eroare la deschiderea fisierului\n");
-
+        if (!f) {
+            printf("Failed to load %s\n", path);
+        }
     } else if ((strcmp(mword, "P1") == 0) ||
                (strcmp(mword, "P2") == 0) ||
                (strcmp(mword, "P3") == 0)) {
 
         // ASCII File (Plain text)
         f = fopen(path, "r");
-        if (!f)
-            perr("Eroare la deschiderea fisierului\n");
-
+        if (!f){
+            printf("Failed to load %s\n", path);
+        }
     } else {
-        perr("Fisier invalid (Nu contine magic word-ul)\n");
+        printf("Failed to load %s\n", path);
     }
 
     // Citim headerul
     char spare_char;
-    if (fscanf(f, "P%c\n", &spare_char) != 1)
-        perr("Nu contine magic word-ul\n");
+    if (fscanf(f, "P%c\n", &spare_char) != 1) {
+        printf("Failed to load %s\n", path);
+        fclose(f);
+    }
 
     // Trecem peste comentarii
     // Trebuie pus dupa fiecare linie din header
@@ -102,8 +105,11 @@ void load_image(const char *path, const char *mword,
         spare_char =fgetc(f);
     }
 
-    if (!(isdigit(spare_char)))
-        perr("Invalid content of file\n");
+    // Invalid content
+    if (!(isdigit(spare_char))) {
+        printf("Failed to load %s\n", path);
+        fclose(f);
+    }
 
     ungetc(spare_char, f);                // Punem cifra inapoi
 
@@ -112,15 +118,22 @@ void load_image(const char *path, const char *mword,
     data->alpha = maxval;
 
     if (!(strcmp(mword, "P1")) || !(strcmp(mword, "P4")))
-        if (maxval != 1)
-            perr("Nu este alb negru / pbm\n");
+        if (maxval != 1) {
+            /* Nu e alb negru */
+            printf("Failed to load %s\n", path);
+            fclose(f);
+        }
     if (!(strcmp(mword, "P2")) || !(strcmp(mword, "P5")) ||
         !(strcmp(mword, "P3")) || !(strcmp(mword, "P6"))) {
-        if (maxval != 255)
-            perr("Max val al unui pixel nu este 255 (Lucram cu 255)\n");
+        if (maxval != 255) {
+            /* Maxval diferit de 255 */
+            printf("Failed to load %s\n", path);
+            fclose(f);
+        }
     }
 
     // Binary | ASCII | extension
+    // -------+-------+----------
     //     P4 |    P1 | 	 .pbm
     //     P5 |    P2 | 	 .pgm
     //     P6 |    P3 | 	 .ppm
@@ -132,5 +145,8 @@ void load_image(const char *path, const char *mword,
     } else if (!(strcmp(mword, "P3")) || !(strcmp(mword, "P6"))) {
         ppm_load(f, *height, *width, binary, data);
     }
+
+    printf("Loaded %s\n", path);
+
     fclose(f);
 }
