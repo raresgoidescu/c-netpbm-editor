@@ -42,13 +42,11 @@ int main(void)
 				printf("Failed to load %s\n", path);
 				continue;
 			}
-				
 			if (!loaded)
 				continue;
 			int realfile = readMagicWord(path, magic_word, &colored);
-			if (!realfile) {
+			if (!realfile)
 				continue;
-			}
 
 			// Binary | ASCII | extension
 			// -------+-------+----------
@@ -130,7 +128,7 @@ int main(void)
 
 				// save();
 
-				printf("Saved %s", path);
+				printf("Saved %s | %d\n", path, ascii);
 			} else {
 				puts("No image loaded");
 			}

@@ -9,7 +9,7 @@ void parse_command(char buff[], char cmd[], char path[], char params[], char old
 	int lenght = strlen(buff) - 1;
 	// printf("%d\n", lenght);
 	buff[lenght] = '\0';
-	char delims[] = " ";
+	char delims[] = " \n";
 	char *p = strtok(buff, delims);
 	int field = 0;
 	while (p) {
@@ -94,13 +94,13 @@ void parse_command(char buff[], char cmd[], char path[], char params[], char old
 			strcpy(path, p);
 			field++;
 			p = strtok(NULL, delims);
-			if (p != NULL)
-				if (strcmp(p, "ascii")) {
-					*ascii = 1;
-					field++;
-					p = strtok(NULL, delims);
-					continue;
-				}
+			if (p == NULL) {
+				continue;
+			}
+			if (!strcmp(p, "ascii"))
+				*ascii = 1;
+			else
+			 	puts("what the duck man");
 			continue;
 		}
 		field++;
