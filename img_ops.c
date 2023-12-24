@@ -40,7 +40,6 @@ void print_histogram(img_data data, int from_x, int from_y, int to_x, int to_y, 
 
     histogram(data, from_x, from_y, to_x, to_y, freq);
 
-    // S-AR PUTEA SA FIE MEDIE --- SUM / (256 / bin)
     for (int i = 0; i < 256; i += 256 / bins) {
         int sum = 0;
         for (int j = i; j < i + (256 / bins); ++j)
@@ -54,15 +53,15 @@ void print_histogram(img_data data, int from_x, int from_y, int to_x, int to_y, 
         if (freq[i] > maxfq)
             maxfq = freq[i];
 
-    printf("***%d***\n", 256 / bins);
+    // printf("***%d***\n", 256 / bins);
 
     for (int i = 0; i < 256; i += 256 / bins) {
-        printf("%d\t|\t", freq[i]);
         double nastk = ((double)freq[i] / (double)maxfq) * (double)astks;
+        printf("%d\t|\t", (int)nastk);
         for (int j = 0; j < (int)nastk; ++j) {
             printf("*");
         }
-        printf("%lf\n", nastk);
+        printf("\n");
     }
 }
 
