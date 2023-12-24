@@ -1,1 +1,17 @@
 z.out
+/checker
+/check_utils
+/cs
+/input
+/output
+/ref
+/src
+/tasks
+/tests
+Cargo.lock
+Cargo.toml
+check
+checker.sh
+install.sh
+tests.json
+
