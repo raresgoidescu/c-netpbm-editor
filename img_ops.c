@@ -1,5 +1,7 @@
 #include "img_struct.h"
+#include "err_handling.c"
 #include <stdio.h>
+#include <string.h>
 
 /******************************PRIVATE FUNCTIONS******************************/
 
@@ -53,8 +55,6 @@ void print_histogram(img_data data, int from_x, int from_y, int to_x, int to_y, 
         if (freq[i] > maxfq)
             maxfq = freq[i];
 
-    // printf("***%d***\n", 256 / bins);
-
     for (int i = 0; i < 256; i += 256 / bins) {
         double nastk = ((double)freq[i] / (double)maxfq) * (double)astks;
         printf("%d\t|\t", (int)nastk);
@@ -91,4 +91,73 @@ void equalize(img_data data, int from_x, int from_y, int to_x, int to_y, int col
             data.pixel_map[i][j] = ((double)alpha / (double)area) * (double)sum_from_0_to_a(H, data.pixel_map[i][j]);
         }
     }
+}
+
+void save(img_data data, char *mword, char *path, int ascii, int colored)
+{
+    FILE *f;
+    if (!ascii) {
+        f = fopen(path, "wb");
+    } else {
+        f = fopen(path, "w");
+    }
+
+    if (!f)
+        perr("Cant open file");
+
+    // Binary | ASCII | extension
+    // -------+-------+----------
+    //     P4 |    P1 | 	 .pbm
+    //     P5 |    P2 | 	 .pgm
+    //     P6 |    P3 | 	 .ppm
+
+    if (colored) {
+
+        if (ascii && !strcmp(mword, "P6"))
+            mword[1] = '3';
+        if (!ascii && !strcmp(mword, "P3"))
+            mword[1] = '6';
+
+        fprintf(f, "%s ", mword);
+        fprintf(f, "%d %d ", data.width, data.height);
+        fprintf(f, "%d ", data.alpha);
+
+        for (int i = 0; i < data.height; ++i) {
+            for (int j = 0; j < data.width; ++j) {
+                int alph = data.pixel_map[i][j] >> 24;
+                int blue = (data.pixel_map[i][j] >> 16) & alph;
+                int green = (data.pixel_map[i][j] >> 8) & alph;
+                int red = (data.pixel_map[i][j]) & alph;
+                if (!ascii) {
+                    fputc(red, f);
+                    fputc(green, f);
+                    fputc(blue, f);
+                } else {
+                    fprintf(f, "%d %d %d ", red, green, blue);
+                }
+            }
+        }
+    } else {
+        if (ascii && !strcmp(mword, "P5"))
+            mword[1] = '2';
+        if (!ascii && !strcmp(mword, "P2"))
+            mword[1] = '5';
+
+        fprintf(f, "%s ", mword);
+        fprintf(f, "%d %d ", data.width, data.height);
+        fprintf(f, "%d ", data.alpha);
+
+        for (int i = 0; i < data.height; ++i) {
+            for (int j = 0; j < data.width; ++j) {
+                int pixel = data.pixel_map[i][j];
+                if (!ascii) {
+                    fputc(pixel, f);
+                } else {
+                    fprintf(f, "%d ", pixel);
+                }
+            }
+        }
+    }
+
+    fclose(f);
 }

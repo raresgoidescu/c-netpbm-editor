@@ -58,11 +58,10 @@ void ppm_load(FILE *f_ptr, const int height, const int width, const int binary, 
 
 
 
-void load_image(const char *path, const char *mword,
+void load_image(const char *path, const char *mword, int *binary,
                 img_data *data, int *height, int *width)
 {
     FILE *f;
-    int binary = 0;
 
     // printf("***%d\t%d***\n", *height, *width);
     if (*height != 0 || *width != 0) {
@@ -74,7 +73,7 @@ void load_image(const char *path, const char *mword,
         (strcmp(mword, "P6") == 0)) {
 
         // Binary File (Raw)
-        binary = 1;
+        *binary = 1;
         f = fopen(path, "rb");
         if (!f) {
             printf("Failed to load %s\n", path);
@@ -144,11 +143,11 @@ void load_image(const char *path, const char *mword,
     //     P6 |    P3 | 	 .ppm
 
     if (!(strcmp(mword, "P1")) || !(strcmp(mword, "P4"))) {
-        nonppm_load(f, *height, *width, binary, data);
+        nonppm_load(f, *height, *width, *binary, data);
     } else if (!(strcmp(mword, "P2")) || !(strcmp(mword, "P5"))) {
-        nonppm_load(f, *height, *width, binary, data);
+        nonppm_load(f, *height, *width, *binary, data);
     } else if (!(strcmp(mword, "P3")) || !(strcmp(mword, "P6"))) {
-        ppm_load(f, *height, *width, binary, data);
+        ppm_load(f, *height, *width, *binary, data);
     }
 
     printf("Loaded %s\n", path);
