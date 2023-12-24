@@ -66,7 +66,7 @@ void print_histogram(img_data data, int from_x, int from_y, int to_x, int to_y, 
     }
 }
 
-void equalize(img_data data, int from_x, int from_y, int to_x, int to_y)
+void equalize(img_data data, int from_x, int from_y, int to_x, int to_y, int colored)
 {
     /*
         formula: f(a) = 255 / Area * Sum from 0 to a ( H(i) )
@@ -76,6 +76,11 @@ void equalize(img_data data, int from_x, int from_y, int to_x, int to_y)
             - Area = :)
             - H(i) = no pixels with the i value 
     */
+
+    if (colored) {
+        puts("Black and white image needed");
+        return;
+    }
 
     long long area = data.height * data.width;
 

@@ -36,25 +36,20 @@ int main(void)
 		parse_command(cmd_buffer, cmd, path, params, &angle, selection_coords, &ALL, &loaded, &astks, &bins, &ascii);
 		if (!(strcmp(cmd, "LOAD"))) {
 			selected = 0;
-			puts(path);
+			// puts(path);
 			char magic_word[3];
-			readMagicWord(path, magic_word, &colored);
+			int realfile = readMagicWord(path, magic_word, &colored);
+			if (!realfile)
+				continue;
+
 			// Binary | ASCII | extension
 			// -------+-------+----------
 			//     P4 |    P1 | 	 .pbm
 			//     P5 |    P2 | 	 .pgm
 			//     P6 |    P3 | 	 .ppm
 
-
 			load_image(path, magic_word, &data, &height, &width);
 
-			/*
-			for (int i = 0; i < height; ++i) {
-				for (int j = 0; j < width; ++j)
-					printf("%u ", data.pixel_map[i][j]);
-				printf("\n");
-			}
-			*/
 		} else if (!(strcmp(cmd, "SELECT"))) {
 			if (loaded) {
 				selected = 1;
@@ -97,7 +92,27 @@ int main(void)
 			if (loaded) {
 				check_if_selected(selected, selection_coords, width, height);
 
-				equalize(data, selection_coords[0], selection_coords[1], selection_coords[2], selection_coords[3]);
+				equalize(data, selection_coords[0], selection_coords[1], selection_coords[2], selection_coords[3], colored);
+			} else {
+				puts("No image loaded");
+			}
+		} else if (!(strcmp(cmd, "CROP"))) {
+			if (loaded) {
+				check_if_selected(selected, selection_coords, width, height);
+
+				// save();
+
+				puts("Image cropped");
+			} else {
+				puts("No image loaded");
+			}
+		} else if (!(strcmp(cmd, "APPLY"))) {
+			if (loaded) {
+				check_if_selected(selected, selection_coords, width, height);
+
+				// save();
+
+				puts("APPLY Done");
 			} else {
 				puts("No image loaded");
 			}
@@ -111,6 +126,16 @@ int main(void)
 			} else {
 				puts("No image loaded");
 			}
+		} else if (!(strcmp(cmd, "ROTATE"))) {
+			if (loaded) {
+				check_if_selected(selected, selection_coords, width, height);
+
+				// save();
+
+				puts("ROTATE");
+			} else {
+				puts("No image loaded");
+			}
 		} else if (!(strcmp(cmd, "EXIT"))) {
 			if (loaded) {
 				deallocate_matrix(data.pixel_map, height);
@@ -120,7 +145,7 @@ int main(void)
 			}
 		}
 	}
-	printf("%d\t%d\t%d\t%d\n", selection_coords[0], selection_coords[1], selection_coords[2], selection_coords[3]);
-	puts(path);
+	//printf("%d\t%d\t%d\t%d\n", selection_coords[0], selection_coords[1], selection_coords[2], selection_coords[3]);
+	//puts(path);
 	return 0;
 }

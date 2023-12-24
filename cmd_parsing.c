@@ -1,10 +1,10 @@
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 /* Trebuie sa validez si comenzile cu parametri, in caz ca parametrii nu sunt valizi */
 /* Trebuie sa maresc lungimile bufferelor */
-/* Trebuie sa validez path-ul si daca este .ppm/.pgm/.pbm */
 void parse_command(char buff[], char cmd[], char path[], char params[], int *angle, int coords[], int *ALL, int *loaded, int *astks, int *bins, int *ascii) {
 	int lenght = strlen(buff) - 1;
 	// printf("%d\n", lenght);
@@ -40,7 +40,7 @@ void parse_command(char buff[], char cmd[], char path[], char params[], int *ang
 				field++;
 				p = strtok(NULL, delims);
 				continue;
-			} else {
+			} else if (!isalpha(p[0]) && !isalpha(p[2]) && !isalpha(p[4]) && !isalpha(p[6])) {
 				coords[0] = atoi(p); // x1
 				field++;
 				p = strtok(NULL, delims);
@@ -54,6 +54,11 @@ void parse_command(char buff[], char cmd[], char path[], char params[], int *ang
 				field++;
 				// printf("%d %d %d %d\n", coords[0], coords[1], coords[2], coords[3]);
 				*ALL = 0;
+				p = strtok(NULL, delims);
+				continue;
+			} else {
+				puts("What the duck man");
+				field++;
 				p = strtok(NULL, delims);
 				continue;
 			}
@@ -80,11 +85,14 @@ void parse_command(char buff[], char cmd[], char path[], char params[], int *ang
 			strcpy(path, p);
 			field++;
 			p = strtok(NULL, delims);
-			if (strcmp(p, "ascii")) {
-				*ascii = 1;
-				field++;
-				p = strtok(NULL, delims);
-			}
+			if (p != NULL)
+				if (strcmp(p, "ascii")) {
+					*ascii = 1;
+					field++;
+					p = strtok(NULL, delims);
+					continue;
+				}
+			continue;
 		}
 		field++;
 		p = strtok(NULL, delims);

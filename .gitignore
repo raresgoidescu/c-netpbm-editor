@@ -8,10 +8,12 @@ z.out
 /src
 /tasks
 /tests
+/target
 Cargo.lock
 Cargo.toml
 check
 checker.sh
 install.sh
 tests.json
-
+image_check
+image_editor

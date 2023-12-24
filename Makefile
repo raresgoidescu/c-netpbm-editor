@@ -2,17 +2,17 @@
 
 CC=gcc
 FLAGS=-Wall -Wextra -std=c99
-TARGETS=
+TARGETS=main.c
 
 build: $(TARGETS)
-	$(CC) $(FLAGS) -o   $(TARGETS) -g
+	$(CC) $(FLAGS) -o image_editor  $(TARGETS) -g
 
 run:
-	$(CC) $(FLAGS) -o   $(TARGETS) -g
-	valgrind ./
-
+	$(CC) $(FLAGS) -o image_editor  $(TARGETS) -g
+	valgrind ./image_editor
 
 clean:
+	rm -f image_editor
 
 pack:
 	zip -FSr 312CA_GoidescuRares-Stefan_Tema3.zip README Makefile *.c *.h
