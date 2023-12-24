@@ -29,6 +29,11 @@ void parse_command(char buff[], char cmd[], char path[], char params[], int *ang
 			continue;
 		} else if (field == 1 && strcmp(cmd, "LOAD") == 0) {
 			strcpy(path, p);
+			if (path[strlen(path) - 1] == '/') {
+				field++;
+				p = strtok(NULL, delims);
+				continue;
+			}
 			*loaded = 1;
 			field++;
 			p = strtok(NULL, delims);

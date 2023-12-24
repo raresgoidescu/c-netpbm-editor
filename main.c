@@ -38,6 +38,8 @@ int main(void)
 			selected = 0;
 			// puts(path);
 			char magic_word[3];
+			if (!loaded)
+				continue;
 			int realfile = readMagicWord(path, magic_word, &colored);
 			if (!realfile)
 				continue;
