@@ -24,8 +24,8 @@ void check_if_selected(int selected, int *selection_coords, int width, int heigh
 int main(void)
 {
 	// Vezi probleme la lungimile bufferelor
-	char cmd_buffer[BUFFERMAX], cmd[15], path[30], params[15];
-	int angle = 0, selection_coords[4], ALL = 0, loaded = 0;
+	char cmd_buffer[BUFFERMAX], cmd[15], path[30], params[15], oldpath[30];
+	int angle = 0, selection_coords[4], ALL = 0, loaded = 0, l_err = 0;
 	int selected = 0, astks = 0, bins = 0, colored = 0, ascii = 0;
 	int height = 0, width = 0;
 	img_data data;
@@ -33,16 +33,22 @@ int main(void)
 		selection_coords[i] = 0;
 	while (1) {
 		fgets(cmd_buffer, BUFFERMAX, stdin);
-		parse_command(cmd_buffer, cmd, path, params, &angle, selection_coords, &ALL, &loaded, &astks, &bins, &ascii);
+		parse_command(cmd_buffer, cmd, path, params, oldpath,  &angle, selection_coords, &ALL, &loaded, &astks, &bins, &ascii, &l_err);
 		if (!(strcmp(cmd, "LOAD"))) {
 			selected = 0;
 			// puts(path);
 			char magic_word[3];
+			if (l_err) {
+				printf("Failed to load %s\n", path);
+				continue;
+			}
+				
 			if (!loaded)
 				continue;
 			int realfile = readMagicWord(path, magic_word, &colored);
-			if (!realfile)
+			if (!realfile) {
 				continue;
+			}
 
 			// Binary | ASCII | extension
 			// -------+-------+----------
