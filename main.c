@@ -18,7 +18,7 @@ int main(void)
 	char cmd_buffer[BUFFERMAX], cmd[15], path[30], params[15];
 	int angle = 0, selection_coords[4], ALL = 0, loaded = 0;
 	int selected = 0, astks = 0, bins = 0, colored = 0;
-	int height, width;
+	int height = 0, width = 0;
 	img_data data;
 	for (int i = 0; i < 4; ++i)
 		selection_coords[i] = 0;
@@ -26,6 +26,7 @@ int main(void)
 		fgets(cmd_buffer, BUFFERMAX, stdin);
 		parse_command(cmd_buffer, cmd, path, params, &angle, selection_coords, &ALL, &loaded, &astks, &bins);
 		if (!(strcmp(cmd, "LOAD"))) {
+			selected = 0;
 			puts(path);
 			char magic_word[3];
 			readMagicWord(path, magic_word, &colored);
@@ -34,6 +35,8 @@ int main(void)
 			//     P4 |    P1 | 	 .pbm
 			//     P5 |    P2 | 	 .pgm
 			//     P6 |    P3 | 	 .ppm
+
+
 			load_image(path, magic_word, &data, &height, &width);
 
 			/*
