@@ -201,9 +201,9 @@ void save(img_data data, char *mword, char *path, int ascii, int colored)
         if (!ascii && !strcmp(mword, "P3"))
             mword[1] = '6';
 
-        fprintf(f, "%s ", mword);
-        fprintf(f, "%d %d ", data.width, data.height);
-        fprintf(f, "%d ", data.alpha);
+        fprintf(f, "%s\n", mword);
+        fprintf(f, "%d %d\n", data.width, data.height);
+        fprintf(f, "%d\n", data.alpha);
 
         for (int i = 0; i < data.height; ++i) {
             for (int j = 0; j < data.width; ++j) {
