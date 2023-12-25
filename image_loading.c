@@ -65,7 +65,7 @@ void load_image(const char *path, const char *mword, int *binary,
 
     // printf("***%d\t%d***\n", *height, *width);
     if (*height != 0 || *width != 0) {
-        deallocate_matrix(data->pixel_map, *height);
+        deallocate_matrix(data->pixel_map, data->height);
     }
 
     if ((strcmp(mword, "P4") == 0) ||

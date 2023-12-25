@@ -88,9 +88,7 @@ void parse_command(char buff[], char cmd[], char path[], char params[], char old
 			continue;
 		} else if (field == 1 && strcmp(cmd, "APPLY") == 0) {
 			strcpy(params, p);
-			puts(params);
-
-			/* Validate the param */
+			// puts(params);
 
 			field++;
 			p = strtok(NULL, delims);

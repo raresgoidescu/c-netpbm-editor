@@ -34,6 +34,14 @@ int main(void)
 		selection_coords[i] = 0;
 	while (1) {
 		fgets(cmd_buffer, BUFFERMAX, stdin);
+		if (!strcmp(cmd_buffer, "EXIT")) {
+			if (loaded) {
+				deallocate_matrix(data.pixel_map, height);
+				break;
+			} else {
+			 	puts("No image loaded");
+			}
+		}
 		parse_command(cmd_buffer, cmd, path, params, oldpath,  &angle, selection_coords, &ALL, &loaded, &astks, &bins, &ascii, &l_err, savepath);
 		if (!(strcmp(cmd, "LOAD"))) {
 			selected = 0;
@@ -58,7 +66,11 @@ int main(void)
 			load_image(path, magic_word, &binary, &data, &height, &width);
 			data.height = height;
 			data.width = width;
-			printf("%d | %d \n", data.height, data.width);
+			selection_coords[0] = 0;
+			selection_coords[1] = 0;
+			selection_coords[2] = width;
+			selection_coords[3] = height;
+			// printf("%d | %d \n", data.height, data.width);
 
 		} else if (!(strcmp(cmd, "SELECT"))) {
 			if (loaded) {
@@ -108,17 +120,24 @@ int main(void)
 			}
 		} else if (!(strcmp(cmd, "CROP"))) {
 			if (loaded) {
-				check_if_selected(selected, selection_coords, data);
-
+				//printf("%d\t%d\t%d\t%d\n", selection_coords[0], selection_coords[1], selection_coords[2], selection_coords[3]);
 				crop(&data, selection_coords[0], selection_coords[1], selection_coords[2], selection_coords[3]);
+				selection_coords[0] = 0;
+				selection_coords[1] = 0;
+				selection_coords[2] = data.width;
+				selection_coords[3] = data.height;
 			} else {
 				puts("No image loaded");
 			}
 		} else if (!(strcmp(cmd, "APPLY"))) {
 			if (loaded) {
+				if (!colored) {
+					puts("Easy, Charlie Chaplin");
+				} else {
 				check_if_selected(selected, selection_coords, data);
 
-				apply(&data, params);
+				apply(&data, params, selection_coords[0], selection_coords[1], selection_coords[2], selection_coords[3]);
+				}
 			} else {
 				puts("No image loaded");
 			}
@@ -128,17 +147,17 @@ int main(void)
 
 				save(data, magic_word, savepath, ascii, colored);
 
-				printf("Saved %s | %d\n", savepath, ascii);
+				printf("Saved %s\n", savepath);
 			} else {
 				puts("No image loaded");
 			}
 		} else if (!(strcmp(cmd, "ROTATE"))) {
 			if (loaded) {
-				check_if_selected(selected, selection_coords, data);
+				// check_if_selected(selected, selection_coords, data);
 
 				// save();
 
-				puts("ROTATE");
+				puts("ROTATE not implemented");
 			} else {
 				puts("No image loaded");
 			}
@@ -151,7 +170,7 @@ int main(void)
 			}
 		}
 	}
-	//printf("%d\t%d\t%d\t%d\n", selection_coords[0], selection_coords[1], selection_coords[2], selection_coords[3]);
-	puts(path);
+	// printf("%d\t%d\t%d\t%d\n", selection_coords[0], selection_coords[1], selection_coords[2], selection_coords[3]);
+	// puts(path);
 	return 0;
 }

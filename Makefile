@@ -5,10 +5,10 @@ FLAGS=-Wall -Wextra -std=c99
 TARGETS=main.c
 
 build: $(TARGETS)
-	$(CC) $(FLAGS) -o image_editor  $(TARGETS) -g
+	$(CC) $(FLAGS) $(TARGETS) -lm -o image_editor -g
 
 run:
-	$(CC) $(FLAGS) -o image_editor  $(TARGETS) -g
+	$(CC) $(FLAGS) $(TARGETS) -lm -o image_editor -g
 	valgrind ./image_editor
 
 clean:

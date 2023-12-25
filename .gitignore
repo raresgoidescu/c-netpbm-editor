@@ -17,3 +17,5 @@ install.sh
 tests.json
 image_check
 image_editor
+dummy
+.check.grade

@@ -278,7 +278,7 @@ void crop(img_data *data, int from_x, int from_y, int to_x, int to_y)
 /* If image !colored "Easy, Charlie Chaplin" */
 /* Pixels with not enough neighbours remain unchanged */
 
-void apply(img_data *data, char *param)
+void apply(img_data *data, char *param, int from_x, int from_y, int to_x, int to_y)
 {
     double edge_mat[3][3] = {{-1, -1, -1},
                              {-1, 8, -1},
@@ -311,10 +311,23 @@ void apply(img_data *data, char *param)
         for (int i = 0; i < 3; i++)
             for (int j = 0; j < 3; j++)
                 kernel[i][j] = g_blur_mat[i][j] / (double)16;
+    } else {
+        puts("APPLY parameter invalid");
+        deallocate_double_matrix(kernel, 3);
+        return;
     }
 
-    for (int i = 1; i < data->height - 1; ++i) {
-        for (int j = 1; j < data->width - 1; ++j) {
+    if (from_x == 0)
+        from_x = 1;
+    if (to_x == data->width)
+        to_x--;
+    if (from_y == 0)
+        from_y = 1;
+    if (to_y == data->height)
+        to_y--;
+
+    for (int i = from_y; i < to_y; ++i) {
+        for (int j = from_x; j < to_x; ++j) {
 
             unsigned int **mblock = allocate_matrix(3, 3);
             for (int k = -1; k < 2; k++) {
@@ -322,6 +335,7 @@ void apply(img_data *data, char *param)
                     mblock[k + 1][l + 1] = data->pixel_map[i + k][j + l];
                 }
             }
+
             apply_kernel(&mblock, kernel, 3);
 
             unsigned int newpixel = 0;
