@@ -1,3 +1,6 @@
+#ifndef mem_ops
+#define mem_ops
+
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -33,3 +36,5 @@ void deallocate_matrix(unsigned int **ptr, int n) {
 		free(ptr[i]);
 	free(ptr);
 }
+
+#endif

@@ -12,12 +12,12 @@
 #include "image_loading.c"
 #define BUFFERMAX 200
 
-void check_if_selected(int selected, int *selection_coords, int width, int height) {
+void check_if_selected(int selected, int *selection_coords, img_data data) {
 	if (!selected) {
 		selection_coords[0] = 0;
 		selection_coords[1] = 0;
-		selection_coords[2] = width;
-		selection_coords[3] = height;
+		selection_coords[2] = data.width;
+		selection_coords[3] = data.height;
 	}
 }
 
@@ -78,8 +78,8 @@ int main(void)
 					if (ALL) {
 						selection_coords[0] = 0;
 						selection_coords[1] = 0;
-						selection_coords[2] = width;
-						selection_coords[3] = height;
+						selection_coords[2] = data.width;
+						selection_coords[3] = data.height;
 					}
 				}
 				if (!ALL)
@@ -92,7 +92,7 @@ int main(void)
 		} else if (!(strcmp(cmd, "HISTOGRAM"))) {
 			if (loaded) {
 				// Trebuie pus inainte de fiecare comanda
-				check_if_selected(selected, selection_coords, width, height);
+				check_if_selected(selected, selection_coords, data);
 
 				print_histogram(data, selection_coords[0], selection_coords[1], selection_coords[2], selection_coords[3], astks, bins, colored);
 			} else {
@@ -100,7 +100,7 @@ int main(void)
 			}
 		} else if (!(strcmp(cmd, "EQUALIZE"))) {
 			if (loaded) {
-				check_if_selected(selected, selection_coords, width, height);
+				check_if_selected(selected, selection_coords, data);
 
 				equalize(data, selection_coords[0], selection_coords[1], selection_coords[2], selection_coords[3], colored);
 			} else {
@@ -108,17 +108,15 @@ int main(void)
 			}
 		} else if (!(strcmp(cmd, "CROP"))) {
 			if (loaded) {
-				check_if_selected(selected, selection_coords, width, height);
+				check_if_selected(selected, selection_coords, data);
 
-				// save();
-
-				puts("Image cropped");
+				crop(&data, selection_coords[0], selection_coords[1], selection_coords[2], selection_coords[3]);
 			} else {
 				puts("No image loaded");
 			}
 		} else if (!(strcmp(cmd, "APPLY"))) {
 			if (loaded) {
-				check_if_selected(selected, selection_coords, width, height);
+				check_if_selected(selected, selection_coords, data);
 
 				// save();
 
@@ -128,7 +126,7 @@ int main(void)
 			}
 		} else if (!(strcmp(cmd, "SAVE"))) {
 			if (loaded) {
-				check_if_selected(selected, selection_coords, width, height);
+				check_if_selected(selected, selection_coords, data);
 
 				save(data, magic_word, savepath, ascii, colored);
 
@@ -138,7 +136,7 @@ int main(void)
 			}
 		} else if (!(strcmp(cmd, "ROTATE"))) {
 			if (loaded) {
-				check_if_selected(selected, selection_coords, width, height);
+				check_if_selected(selected, selection_coords, data);
 
 				// save();
 

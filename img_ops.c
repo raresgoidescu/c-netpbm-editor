@@ -1,5 +1,6 @@
 #include "img_struct.h"
 #include "err_handling.c"
+#include "mem_ops.c"
 #include <stdio.h>
 #include <string.h>
 
@@ -160,4 +161,33 @@ void save(img_data data, char *mword, char *path, int ascii, int colored)
     }
 
     fclose(f);
+}
+
+void crop(img_data *data, int from_x, int from_y, int to_x, int to_y)
+{
+    int width, height;
+    width = to_x - from_x;
+    height = to_y - from_y;
+    unsigned int **cropped_map = allocate_matrix(height, width);
+
+    for (int i = 0; i < height; ++i) {
+        for (int j = 0; j < width; ++j) {
+            cropped_map[i][j] = data->pixel_map[from_x + i][from_y + j];
+        }
+    }
+
+    deallocate_matrix(data->pixel_map, data->height);
+
+    data->pixel_map = allocate_matrix(height, width);
+
+    for (int i = 0; i < height; i++)
+        for (int j = 0; j < width; ++j)
+            data->pixel_map[i][j] = cropped_map[i][j];
+
+    data->height = height;
+    data->width = width;
+
+    deallocate_matrix(cropped_map, height);
+
+    puts("Image cropped");
 }

@@ -5,7 +5,8 @@
 
 /* Trebuie sa validez si comenzile cu parametri, in caz ca parametrii nu sunt valizi */
 /* Trebuie sa maresc lungimile bufferelor */
-void parse_command(char buff[], char cmd[], char path[], char params[], char oldpath[], int *angle, int coords[], int *ALL, int *loaded, int *astks, int *bins, int *ascii, int *l_err, char savepath[]) {
+void parse_command(char buff[], char cmd[], char path[], char params[], char oldpath[], int *angle, int coords[], int *ALL, int *loaded, int *astks, int *bins, int *ascii, int *l_err, char savepath[])
+{
 	int lenght = strlen(buff) - 1;
 	// printf("%d\n", lenght);
 	buff[lenght] = '\0';
