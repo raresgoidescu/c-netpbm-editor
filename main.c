@@ -12,6 +12,13 @@
 #include "image_loading.c"
 #define BUFFERMAX 200
 
+/*
+	TODO:
+		Refactor parsing and main
+		Vezi linia 27 in 22
+*/
+
+
 void check_if_selected(int selected, int *selection_coords, img_data data) {
 	if (!selected) {
 		selection_coords[0] = 0;
@@ -27,7 +34,7 @@ int main(void)
 	char cmd_buffer[BUFFERMAX], cmd[15], path[30], params[15], oldpath[30];
 	int angle = 0, selection_coords[4], ALL = 0, loaded = 0, l_err = 0;
 	int selected = 0, astks = 0, bins = 0, colored = 0, ascii = 0;
-	int height = 0, width = 0, binary = 0;
+	int height = 0, width = 0, binary = 0, oldcoord[4];
 	char magic_word[3], savepath[30];
 	img_data data;
 	for (int i = 0; i < 4; ++i)
@@ -36,13 +43,13 @@ int main(void)
 		fgets(cmd_buffer, BUFFERMAX, stdin);
 		if (!strcmp(cmd_buffer, "EXIT")) {
 			if (loaded) {
-				deallocate_matrix(data.pixel_map, height);
+				deallocate_matrix(data.pixel_map, data.height);
 				break;
 			} else {
 			 	puts("No image loaded");
 			}
 		}
-		parse_command(cmd_buffer, cmd, path, params, oldpath,  &angle, selection_coords, &ALL, &loaded, &astks, &bins, &ascii, &l_err, savepath);
+		parse_command(cmd_buffer, cmd, path, params, oldpath,  &angle, selection_coords, &ALL, &loaded, &astks, &bins, &ascii, &l_err, savepath, oldcoord);
 		if (!(strcmp(cmd, "LOAD"))) {
 			selected = 0;
 			binary = 0;
@@ -62,14 +69,20 @@ int main(void)
 			//     P4 |    P1 | 	 .pbm
 			//     P5 |    P2 | 	 .pgm
 			//     P6 |    P3 | 	 .ppm
-
-			load_image(path, magic_word, &binary, &data, &height, &width);
+			if (!l_err) {
+				//printf("%d\n", l_err);
+				load_image(path, magic_word, &binary, &data, &height, &width);
+			}
 			data.height = height;
 			data.width = width;
 			selection_coords[0] = 0;
 			selection_coords[1] = 0;
 			selection_coords[2] = width;
 			selection_coords[3] = height;
+			oldcoord[0] = 0;
+			oldcoord[1] = 0;
+			oldcoord[2] = width;
+			oldcoord[3] = height;
 			// printf("%d | %d \n", data.height, data.width);
 
 		} else if (!(strcmp(cmd, "SELECT"))) {
@@ -79,8 +92,14 @@ int main(void)
 				for (int i = 0; i < 4; ++i)
 					if (selection_coords[i] < 0 && ALL == 0)
 						ok = 0;
+				if (selection_coords[2] > data.width || selection_coords[3] > data.height)
+					ok = 0;
 				if (!ok) {
 					printf("Invalid set of coordinates\n");
+					selection_coords[0] = oldcoord[0];
+					selection_coords[1] = oldcoord[1];
+					selection_coords[2] = oldcoord[2];
+					selection_coords[3] = oldcoord[3];
 					continue;
 				} else {
 					if (selection_coords[0] > selection_coords[2])
@@ -163,7 +182,7 @@ int main(void)
 			}
 		} else if (!(strcmp(cmd, "EXIT"))) {
 			if (loaded) {
-				deallocate_matrix(data.pixel_map, height);
+				deallocate_matrix(data.pixel_map, data.height);
 				break;
 			} else {
 			 	puts("No image loaded");

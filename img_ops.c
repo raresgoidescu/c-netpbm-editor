@@ -219,6 +219,8 @@ void save(img_data data, char *mword, char *path, int ascii, int colored)
                     fprintf(f, "%d %d %d ", red, green, blue);
                 }
             }
+            if (ascii)
+                fprintf(f, "\n");
         }
     } else {
         if (ascii && !strcmp(mword, "P5"))
@@ -239,6 +241,8 @@ void save(img_data data, char *mword, char *path, int ascii, int colored)
                     fprintf(f, "%d ", pixel);
                 }
             }
+            if (ascii)
+                fprintf(f, "\n");
         }
     }
 
@@ -248,6 +252,7 @@ void save(img_data data, char *mword, char *path, int ascii, int colored)
 void crop(img_data *data, int from_x, int from_y, int to_x, int to_y)
 {
     int width, height;
+
     width = to_x - from_x;
     height = to_y - from_y;
     unsigned int **cropped_map = allocate_matrix(height, width);
@@ -274,10 +279,6 @@ void crop(img_data *data, int from_x, int from_y, int to_x, int to_y)
     puts("Image cropped");
 }
 
-/* Images have to be colored */
-/* If image !colored "Easy, Charlie Chaplin" */
-/* Pixels with not enough neighbours remain unchanged */
-
 void apply(img_data *data, char *param, int from_x, int from_y, int to_x, int to_y)
 {
     double edge_mat[3][3] = {{-1, -1, -1},
@@ -298,11 +299,11 @@ void apply(img_data *data, char *param, int from_x, int from_y, int to_x, int to
     if (!strcmp(param, "EDGE")) {
         for (int i = 0; i < 3; i++)
             for (int j = 0; j < 3; j++)
-                kernel[i][j] = edge_mat[i][j];
+                kernel[i][j] = (double)edge_mat[i][j];
     } else if (!strcmp(param, "SHARPEN")) {
         for (int i = 0; i < 3; i++)
             for (int j = 0; j < 3; j++)
-                kernel[i][j] = sharpen_mat[i][j];
+                kernel[i][j] = (double)sharpen_mat[i][j];
     } else if (!strcmp(param, "BLUR")) {
         for (int i = 0; i < 3; i++)
             for (int j = 0; j < 3; j++)
