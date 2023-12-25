@@ -1,7 +1,9 @@
 #include "img_struct.h"
 #include "err_handling.c"
 #include "mem_ops.c"
+#include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 /******************************PRIVATE FUNCTIONS******************************/
@@ -23,6 +25,84 @@ int sum_from_0_to_a(int *v, int a) {
     for (int i = 0; i < a; i++)
         sum += v[i];
     return sum;
+}
+
+int clamp(int value) {
+    if (value < 0)
+        return 0;
+    if (value > 255)
+        return 255;
+    return value;
+}
+
+double **sq_double_double_matrix_multiplication(double **m1, double **m2, int n)
+{
+    double **res = malloc(n * sizeof(double *));
+    if (!res)
+        perr("Eroare la alocarea matricei res\n");
+
+    for (int i = 0; i < n; i++) {
+        res[i] = malloc(n * sizeof(double));
+        if (!res[i]) {
+            for (int j = 0; j < i; ++j) {
+                free(res[i]);
+            }
+            free(res);
+            perr("Eroare la alocarea matricei res\n");
+        }
+    }
+
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            res[i][j] = 0;
+            for (int k = 0; k < n; ++k) {
+                res[i][j] = m1[i][k] * m2[k][j];
+            }
+        }
+    }
+
+    return res;
+}
+
+void apply_kernel(unsigned int ***src, double **ker, int n)
+{
+    double **red = allocate_double_matrix(n, n);
+    double **green = allocate_double_matrix(n, n);
+    double **blue = allocate_double_matrix(n, n);
+
+    int alpha;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            int alph = (*src)[i][j] >> 24;
+            alpha = alph;
+            blue[i][j] = ((*src)[i][j] >> 16) & alph;
+            green[i][j] = ((*src)[i][j] >> 8) & alph;
+            red[i][j] = ((*src)[i][j]) & alph;
+        }
+    }
+
+
+    double **red_ = sq_double_double_matrix_multiplication(red, ker, n);
+    deallocate_double_matrix(red, n);
+
+    double **green_ = sq_double_double_matrix_multiplication(green, ker, n);
+    deallocate_double_matrix(green, n);
+
+    double **blue_ = sq_double_double_matrix_multiplication(blue, ker, n);
+    deallocate_double_matrix(blue, n);
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            int r = clamp(round(red_[i][j]));
+            int g = clamp(round(green_[i][j]));
+            int b = clamp(round(blue_[i][j]));
+            (*src)[i][j] = alpha << 24 | b << 16 | g << 8 | r;
+        }
+    }
+
+    deallocate_double_matrix(red_, n);
+    deallocate_double_matrix(green_, n);
+    deallocate_double_matrix(blue_, n);
 }
 
 /*****************************EXPORTED FUNCTIONS******************************/
@@ -92,6 +172,8 @@ void equalize(img_data data, int from_x, int from_y, int to_x, int to_y, int col
             data.pixel_map[i][j] = ((double)alpha / (double)area) * (double)sum_from_0_to_a(H, data.pixel_map[i][j]);
         }
     }
+
+    puts("Equalize done");
 }
 
 void save(img_data data, char *mword, char *path, int ascii, int colored)
@@ -190,4 +272,81 @@ void crop(img_data *data, int from_x, int from_y, int to_x, int to_y)
     deallocate_matrix(cropped_map, height);
 
     puts("Image cropped");
+}
+
+/* Images have to be colored */
+/* If image !colored "Easy, Charlie Chaplin" */
+/* Pixels with not enough neighbours remain unchanged */
+
+void apply(img_data *data, char *param)
+{
+    double edge_mat[3][3] = {{-1, -1, -1},
+                             {-1, 8, -1},
+                             {-1, -1, -1}};
+    double sharpen_mat[3][3] = {{0, -1, 0},
+                               {-1, 5, -1},
+                                {0, -1, 0}};
+    double blur_mat[3][3] = {{1, 1, 1},
+                             {1, 1, 1},
+                             {1, 1, 1}};
+    double g_blur_mat[3][3] = {{1, 2, 1},
+                               {2, 4, 2},
+                               {1, 2, 1}};
+
+    double **kernel = allocate_double_matrix(3, 3);
+
+    if (!strcmp(param, "EDGE")) {
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 3; j++)
+                kernel[i][j] = edge_mat[i][j];
+    } else if (!strcmp(param, "SHARPEN")) {
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 3; j++)
+                kernel[i][j] = sharpen_mat[i][j];
+    } else if (!strcmp(param, "BLUR")) {
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 3; j++)
+                kernel[i][j] = blur_mat[i][j] / (double)9;
+    } else if (!strcmp(param, "GAUSSIAN_BLUR")) {
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 3; j++)
+                kernel[i][j] = g_blur_mat[i][j] / (double)16;
+    }
+
+    for (int i = 1; i < data->height - 1; ++i) {
+        for (int j = 1; j < data->width - 1; ++j) {
+
+            unsigned int **mblock = allocate_matrix(3, 3);
+            for (int k = -1; k < 2; k++) {
+                for (int l = -1; l < 2; l++) {
+                    mblock[k + 1][l + 1] = data->pixel_map[i + k][j + l];
+                }
+            }
+            apply_kernel(&mblock, kernel, 3);
+
+            unsigned int newpixel = 0;
+            int sum_r = 0, sum_g = 0, sum_b = 0, alph;
+            for (int i = 0; i < 3; ++i) {
+                for (int j = 0; j < 3; ++j) {
+                    int alpha = mblock[i][j] >> 24;
+                    alph = alpha;
+                    int new_b = (mblock[i][j] >> 16) & alpha;
+                    int new_g = (mblock[i][j] >> 8) & alpha;
+                    int new_r = (mblock[i][j]) & alpha;
+                    sum_r += new_r;
+                    sum_g += new_g;
+                    sum_b += new_b;
+                }
+            }
+            newpixel = alph << 24 | sum_b << 16 | sum_g << 8 | sum_r;
+
+            data->pixel_map[i][j] = newpixel;
+
+            deallocate_matrix(mblock, 3);
+        }
+    }
+
+    deallocate_double_matrix(kernel, 3);
+
+    printf("APPLY %s done\n", param);
 }

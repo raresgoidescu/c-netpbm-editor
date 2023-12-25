@@ -118,9 +118,7 @@ int main(void)
 			if (loaded) {
 				check_if_selected(selected, selection_coords, data);
 
-				// save();
-
-				puts("APPLY Done");
+				apply(&data, params);
 			} else {
 				puts("No image loaded");
 			}

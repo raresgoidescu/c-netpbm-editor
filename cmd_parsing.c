@@ -73,10 +73,10 @@ void parse_command(char buff[], char cmd[], char path[], char params[], char old
 				continue;
 			}
 		} else if (field == 1 && strcmp(cmd, "HISTOGRAM") == 0) {
-			*astks = atoi(p); // x
+			*astks = atoi(p);
 			field++;
 			p = strtok(NULL, delims);
-			*bins = atoi(p); // y
+			*bins = atoi(p);
 			field++;
 			p = strtok(NULL, delims);
 			continue;
@@ -88,6 +88,10 @@ void parse_command(char buff[], char cmd[], char path[], char params[], char old
 			continue;
 		} else if (field == 1 && strcmp(cmd, "APPLY") == 0) {
 			strcpy(params, p);
+			puts(params);
+
+			/* Validate the param */
+
 			field++;
 			p = strtok(NULL, delims);
 			continue;
