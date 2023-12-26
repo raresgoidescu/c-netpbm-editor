@@ -35,55 +35,59 @@ int clamp(int value) {
     return value;
 }
 
-int **sq_int_double_matrix_multiplication(int **m1, double **m2, int n)
+double **sq_int_double_matrix_multiplication(double **m1, double **m2, int n)
 {
-    int **res = allocate_int_matrix(n, n);
+    //int **res = allocate_int_matrix(n, n);
+    double **tmp = allocate_double_matrix(n, n);
 
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
-            res[i][j] = 0;
+            tmp[i][j] = 0.;
             for (int k = 0; k < n; ++k) {
-                res[i][j] += round((double)m1[i][k] * (double)m2[k][j]);
+                tmp[i][j] += (double)((double)m1[i][k] * (double)m2[k][j]);
             }
         }
     }
 
-    return res;
+    //deallocate_double_matrix(tmp, n);
+    //return res;
+    return tmp;
 }
 
 void apply_kernel(unsigned int ***src, double **ker, int n)
 {
-    int **red = allocate_int_matrix(n, n);
-    int **green = allocate_int_matrix(n, n);
-    int **blue = allocate_int_matrix(n, n);
+    double **red = allocate_double_matrix(n, n);
+    double **green = allocate_double_matrix(n, n);
+    double **blue = allocate_double_matrix(n, n);
 
-    int alpha;
+    int alpha = (*src)[1][1] >> 24;
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
-            int alph = (*src)[i][j] >> 24;
-            alpha = alph;
-            blue[i][j] = ((*src)[i][j] >> 16) & alph;
-            green[i][j] = ((*src)[i][j] >> 8) & alph;
-            red[i][j] = ((*src)[i][j]) & alph;
+            int b = ((*src)[i][j] >> 16) & alpha;
+            int g = ((*src)[i][j] >> 8) & alpha;
+            int r = ((*src)[i][j]) & alpha;
+            blue[i][j] = b;
+            green[i][j] = g;
+            red[i][j] = r;
         }
     }
 
-    int **red_ = sq_int_double_matrix_multiplication(red, ker, n);
+    double **red_ = sq_int_double_matrix_multiplication(red, ker, n);
     for (int i = 0; i < n; i++)
         free(red[i]);
     free(red);
 
-    int **green_ = sq_int_double_matrix_multiplication(green, ker, n);
+    double **green_ = sq_int_double_matrix_multiplication(green, ker, n);
     for (int i = 0; i < n; i++)
         free(green[i]);
     free(green);
 
-    int **blue_ = sq_int_double_matrix_multiplication(blue, ker, n);
+    double **blue_ = sq_int_double_matrix_multiplication(blue, ker, n);
     for (int i = 0; i < n; i++)
         free(blue[i]);
     free(blue);
 
-    int sum_r = 0, sum_g = 0, sum_b = 0;
+    double sum_r = 0, sum_g = 0, sum_b = 0;
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             sum_r += red_[i][j];
@@ -92,10 +96,14 @@ void apply_kernel(unsigned int ***src, double **ker, int n)
         }
     }
 
-    sum_r = clamp(sum_r);
-    sum_g = clamp(sum_g);
-    sum_b = clamp(sum_b);
-    (*src)[1][1] = alpha << 24 | sum_b << 16 | sum_g << 8 | sum_r;
+    int r, g, b;
+    r = round(sum_r);
+    g = round(sum_g);
+    b = round(sum_b);
+    r = clamp(r);
+    g = clamp(g);
+    b = clamp(b);
+    (*src)[1][1] = alpha << 24 | b << 16 | g << 8 | r;
 
     for (int i = 0; i < n; i++)
         free(red_[i]);

@@ -1,0 +1,16 @@
+LOAD images/ppm-640.ppm
+CROP
+SAVE c.ppm ascii
+LOAD c.ppm
+APPLY EDGE
+SAVE ce.ppm ascii
+LOAD c.ppm
+APPLY SHARPEN
+SAVE cs.ppm ascii
+LOAD c.ppm
+APPLY BLUR
+SAVE cb.ppm ascii
+LOAD c.ppm
+APPLY GAUSSIAN_BLUR
+SAVE cgb.ppm ascii
+EXIT
