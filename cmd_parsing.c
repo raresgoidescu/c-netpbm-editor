@@ -39,12 +39,12 @@ void parse_command(char buff[], char cmd[], char path[], char params[], char old
 				p = strtok(NULL, delims);
 				continue;
 			}
-			FILE *test = fopen(path, "r");
-			if (!test) {
-				*l_err = 1;
-				break;
-				continue;
-			}
+			// FILE *test = fopen(path, "r");
+			// if (!test) {
+			// 	*l_err = 1;
+			// 	fclose(test);
+			// 	continue;
+			// }
 			*loaded = 1;
 			field++;
 			p = strtok(NULL, delims);
@@ -98,8 +98,6 @@ void parse_command(char buff[], char cmd[], char path[], char params[], char old
 			continue;
 		} else if (field == 1 && strcmp(cmd, "APPLY") == 0) {
 			strcpy(params, p);
-			// puts(params);
-
 			field++;
 			p = strtok(NULL, delims);
 			continue;
@@ -120,4 +118,6 @@ void parse_command(char buff[], char cmd[], char path[], char params[], char old
 		field++;
 		p = strtok(NULL, delims);
 	}
+	if (!strcmp(cmd, "APPLY") && field == 1)
+		puts("Invalid command");
 }

@@ -255,14 +255,16 @@ void crop(img_data *data, int from_x, int from_y, int to_x, int to_y)
 
     width = to_x - from_x;
     height = to_y - from_y;
+    // printf("%d\t|\t%d\n", height, width);
     unsigned int **cropped_map = allocate_matrix(height, width);
 
     for (int i = 0; i < height; ++i) {
         for (int j = 0; j < width; ++j) {
-            cropped_map[i][j] = data->pixel_map[from_x + i][from_y + j];
+            cropped_map[i][j] = data->pixel_map[from_y + i][from_x + j];
         }
     }
 
+    // printf("%d\t|\t%d\n", data->height, data->width);
     deallocate_matrix(data->pixel_map, data->height);
 
     data->pixel_map = allocate_matrix(height, width);
@@ -274,6 +276,7 @@ void crop(img_data *data, int from_x, int from_y, int to_x, int to_y)
     data->height = height;
     data->width = width;
 
+    // printf("%d\t|\t%d\n", height, width);
     deallocate_matrix(cropped_map, height);
 
     puts("Image cropped");
@@ -349,8 +352,8 @@ void apply(img_data *data, char *param, int from_x, int from_y, int to_x, int to
                     int new_g = (mblock[i][j] >> 8) & alpha;
                     int new_r = (mblock[i][j]) & alpha;
                     sum_r += new_r;
-                    sum_g += new_g;
-                    sum_b += new_b;
+                	sum_g += new_g;
+					sum_b += new_b;
                 }
             }
             newpixel = alph << 24 | sum_b << 16 | sum_g << 8 | sum_r;

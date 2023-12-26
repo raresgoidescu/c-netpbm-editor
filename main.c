@@ -47,11 +47,13 @@ int main(void)
 				break;
 			} else {
 			 	puts("No image loaded");
+				break;
 			}
 		}
 		parse_command(cmd_buffer, cmd, path, params, oldpath,  &angle, selection_coords, &ALL, &loaded, &astks, &bins, &ascii, &l_err, savepath, oldcoord);
 		if (!(strcmp(cmd, "LOAD"))) {
 			selected = 0;
+			colored = 0;
 			binary = 0;
 			// puts(path);
 			if (l_err) {
@@ -61,8 +63,10 @@ int main(void)
 			if (!loaded)
 				continue;
 			int realfile = readMagicWord(path, magic_word, &colored);
-			if (!realfile)
+			if (!realfile) {
+				loaded = 0;
 				continue;
+			}
 
 			// Binary | ASCII | extension
 			// -------+-------+----------

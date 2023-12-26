@@ -9,7 +9,7 @@ build: $(TARGETS)
 
 run:
 	$(CC) $(FLAGS) $(TARGETS) -lm -o image_editor -g
-	valgrind ./image_editor
+	valgrind --leak-check=full ./image_editor
 
 clean:
 	rm -f image_editor

@@ -13,6 +13,7 @@ void handle_null_pointer(void *p) {
 
 /* O pot face sa fie mai generala (sa mearga si pentru u, si pt d si pt lf) */
 unsigned int **allocate_matrix(int n, int m) {
+	// printf("*****%d*****\n", n);
 	unsigned int **ptr = NULL;
 	ptr = malloc(n * sizeof(unsigned int *));
 	handle_null_pointer(ptr);
@@ -51,6 +52,7 @@ double **allocate_double_matrix(int n, int m) {
 }
 
 void deallocate_matrix(unsigned int **ptr, int n) {
+	// printf("*****%d*****\n", n);
 	for (int i = 0; i < n; i++)
 		free(ptr[i]);
 	free(ptr);
