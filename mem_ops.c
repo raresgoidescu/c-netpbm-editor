@@ -32,6 +32,26 @@ unsigned int **allocate_matrix(int n, int m) {
 	return ptr;
 }
 
+int **allocate_int_matrix(int n, int m) {
+	// printf("*****%d*****\n", n);
+	int **ptr = NULL;
+	ptr = malloc(n * sizeof(int *));
+	handle_null_pointer(ptr);
+
+	for (int i = 0; i < n; ++i) {
+		ptr[i] = malloc(m * sizeof(int));
+		handle_null_pointer(ptr[i]);
+		if (!ptr) {
+			for (int j = 0; j < i; j++) {
+				free(ptr[j]);
+			}
+			free(ptr);
+		}
+	}
+
+	return ptr;
+}
+
 double **allocate_double_matrix(int n, int m) {
 	double **ptr = NULL;
 	ptr = malloc(n * sizeof(double *));
