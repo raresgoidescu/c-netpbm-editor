@@ -23,8 +23,8 @@ void histogram(img_data data, int from_x, int from_y, int to_x, int to_y, int *f
     }
 }
 
-int sum_from_0_to_a(int *v, int a) {
-    int sum = 0;
+long sum_from_0_to_a(int *v, int a) {
+    long sum = 0;
     for (int i = 0; i < a; i++)
         sum += v[i];
     return sum;
@@ -79,7 +79,7 @@ void print_histogram(img_data data, int from_x, int from_y, int to_x, int to_y, 
     }
 }
 
-void equalize(img_data data, int from_x, int from_y, int to_x, int to_y, int colored)
+void equalize(img_data *data, int colored)
 {
     /*
         formula: f(a) = 255 / Area * Sum from 0 to a ( H(i) )
@@ -95,16 +95,27 @@ void equalize(img_data data, int from_x, int from_y, int to_x, int to_y, int col
         return;
     }
 
-    long long area = data.height * data.width;
+    long long area = data->height * data->width;
 
-    int H[256], alpha = 255;
-    histogram(data, from_x, from_y, to_x, to_y, H);
+    int H[256], alpha = data->alpha;
+    histogram(*data, 0, 0, data->width, data->height, H);
 
-    for (int i = from_y; i < to_y; ++i) {
-        for (int j = from_x; j < to_x; ++j) {
-            data.pixel_map[i][j] = ((double)alpha / (double)area) * (double)sum_from_0_to_a(H, data.pixel_map[i][j]);
+    unsigned int **tmp = allocate_matrix(data->height, data->width);
+
+    for (int i = 0; i < data->height; ++i) {
+        for (int j = 0; j < data->width; ++j) {
+            double res = (double)((double)alpha / (double)area) * (long double)sum_from_0_to_a(H, data->pixel_map[i][j]);
+            tmp[i][j] = clamp(round(res));
         }
     }
+
+    for (int i = 0; i < data->height; ++i) {
+        for (int j = 0; j < data->width; ++j) {
+            data->pixel_map[i][j] = tmp[i][j];
+        }
+    }
+
+    deallocate_matrix(tmp, data->height);
 
     puts("Equalize done");
 }
@@ -180,20 +191,22 @@ void save(img_data data, char *mword, char *path, int ascii, int colored)
     }
 
     fclose(f);
+
+    printf("Saved %s\n", path);
 }
 
-void crop(img_data *data, int from_x, int from_y, int to_x, int to_y)
+void crop(img_data *data, int *from_x, int *from_y, int *to_x, int *to_y)
 {
     int width, height;
 
-    width = to_x - from_x;
-    height = to_y - from_y;
+    width = *to_x - *from_x;
+    height = *to_y - *from_y;
     // printf("%d\t|\t%d\n", height, width);
     unsigned int **cropped_map = allocate_matrix(height, width);
 
     for (int i = 0; i < height; ++i) {
         for (int j = 0; j < width; ++j) {
-            cropped_map[i][j] = data->pixel_map[from_y + i][from_x + j];
+            cropped_map[i][j] = data->pixel_map[*from_y + i][*from_x + j];
         }
     }
 
@@ -209,13 +222,18 @@ void crop(img_data *data, int from_x, int from_y, int to_x, int to_y)
     data->height = height;
     data->width = width;
 
+    *from_x = 0;
+    *from_y = 0;
+    *to_x = data->width;
+    *to_y = data->height;
+
     // printf("%d\t|\t%d\n", height, width);
     deallocate_matrix(cropped_map, height);
 
     puts("Image cropped");
 }
 
-void apply(img_data *data, char *param, int from_x, int from_y, int to_x, int to_y)
+void apply(img_data *data, char *param, int from_x, int from_y, int to_x, int to_y, int colored)
 {
     double edge_mat[3][3] = {{-1., -1., -1.},
                              {-1., 8., -1.},
@@ -229,6 +247,7 @@ void apply(img_data *data, char *param, int from_x, int from_y, int to_x, int to
     double g_blur_mat[3][3] = {{1/16., 2/16., 1/16.},
                                {2/16., 4/16., 2/16.},
                                {1/16., 2/16., 1/16.}};
+
 
     double **kernel = allocate_double_matrix(3, 3);
 
@@ -249,7 +268,16 @@ void apply(img_data *data, char *param, int from_x, int from_y, int to_x, int to
             for (int j = 0; j < 3; j++)
                 kernel[i][j] = g_blur_mat[i][j];
     } else {
+        if (!strcmp(param, "")) {
+            puts("Invalid command");
+            return;
+        }
         puts("APPLY parameter invalid");
+        return;
+    }
+
+    if (!colored) {
+        puts("Easy, Charlie Chaplin");
         deallocate_double_matrix(kernel, 3);
         return;
     }

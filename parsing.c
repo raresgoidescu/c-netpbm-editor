@@ -52,9 +52,10 @@ int want_ascii(char *param)
 
 int cmd_not_found(char *cmd)
 {
-    if (strcmp(cmd, "LOAD") && strcmp(cmd, "SELECT") && strcmp(cmd, "HISTOGRAM") &&
-				strcmp(cmd, "EQUALIZE") && strcmp(cmd, "ROTATE") && strcmp(cmd, "CROP") &&
-				strcmp(cmd, "APPLY") && strcmp(cmd, "SAVE") && strcmp(cmd, "EXIT")) {
+    if (strcmp(cmd, "LOAD") && strcmp(cmd, "SELECT") &&
+        strcmp(cmd, "HISTOGRAM") && strcmp(cmd, "EQUALIZE") &&
+        strcmp(cmd, "ROTATE") && strcmp(cmd, "CROP") &&
+        strcmp(cmd, "APPLY") && strcmp(cmd, "SAVE") && strcmp(cmd, "EXIT")) {
 
         printf("Invalid command\n");
         return 0;
@@ -67,7 +68,8 @@ int cmd_not_found(char *cmd)
 /*****************************EXPORTED FUNCTIONS******************************/
 
 void parse(char *cmd, char *buffer, char *path, char *save_path, char *param,
-           int *ascii, int *ok_load, int *coords, int *all, int *selected)
+           int *ascii, int *ok_load, int *coords, int *bckup, int *all,
+           int *selected, int *astks, int *bins, int *angle)
 {
     int lenght = strlen(buffer) - 1;
 	buffer[lenght] = '\0';
@@ -112,32 +114,61 @@ void parse(char *cmd, char *buffer, char *path, char *save_path, char *param,
                     *all = 1;
                     break;
                 } else {
-                    *all = 0;
-                    coords[0] = atoi(p); // x1
-                    field++;
-                    p = strtok(NULL, delims);
-                    coords[1] = atoi(p); // y1
-                    field++;
-                    p = strtok(NULL, delims);
-                    coords[2] = atoi(p); // x2
-                    field++;
-                    p = strtok(NULL, delims);
-                    coords[3] = atoi(p); // y2
-                    break;
+                    if (!isalpha(p[0]) && !isalpha(p[2]) &&
+                        !isalpha(p[4]) && !isalpha(p[6])) {
+
+                        for (int k = 0; k < 4; k++) {
+                            bckup[k] = coords[k];
+                            coords[k] = atoi(p);
+                            field++;
+                            p = strtok(NULL, delims);
+                        }
+
+                        *all = 0;
+                        break;
+                    } else {
+                        puts("Invalid set of coordinates lol");
+                    }
                 }
             } else if (!strcmp(cmd, "HISTOGRAM")) {
-
+                if (p == NULL) {
+                    *astks = -1;
+                    return;
+                }
+                *astks = atoi(p);
+                field++;
+                p = strtok(NULL, delims);
+                if (p == NULL) {
+                    *astks = -1;
+                    return;
+                }
+                *bins = atoi(p);
+                field++;
+                p = strtok(NULL, delims);
+                if (p != NULL) {
+                    *astks = -1;
+                    *bins = 0;
+                    return;
+                }
+                break;
             } else if (!strcmp(cmd, "EQUALIZE")) {
-
+                return;
             } else if (!strcmp(cmd, "ROTATE")) {
-
+                *angle = atoi(p);
+                return;
             } else if (!strcmp(cmd, "CROP")) {
-
+                return;
             } else if (!strcmp(cmd, "APPLY")) {
-
+                if (p == NULL) {
+                    param[0] = '0';
+                    return;
+                }
+                strcpy(param, p);
+                field++;
+                p = strtok(NULL, delims);
+                continue;
             } else if (!strcmp(cmd, "SAVE")) {
                 strcpy(save_path, p);
-
                 field++;
                 p = strtok(NULL, delims);
 
