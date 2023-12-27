@@ -83,11 +83,7 @@ void equalize(img_data *data, int colored)
 {
     /*
         formula: f(a) = 255 / Area * Sum from 0 to a ( H(i) )
-        where:
-            - f(a) = new value
-            - a    = old value
-            - Area = :)
-            - H(i) = no pixels with the i value 
+        -> you meant cdf?
     */
 
     if (colored) {
@@ -97,25 +93,24 @@ void equalize(img_data *data, int colored)
 
     long long area = data->height * data->width;
 
-    int H[256], alpha = data->alpha;
+    int H[256];
     histogram(*data, 0, 0, data->width, data->height, H);
 
-    unsigned int **tmp = allocate_matrix(data->height, data->width);
+    long sum[256]; // sum = cdf
 
-    for (int i = 0; i < data->height; ++i) {
-        for (int j = 0; j < data->width; ++j) {
-            double res = (double)((double)alpha / (double)area) * (long double)sum_from_0_to_a(H, data->pixel_map[i][j]);
-            tmp[i][j] = clamp(round(res));
-        }
-    }
+    for (int i = 0; i < 256; ++i)
+        sum[i] = 0;
 
-    for (int i = 0; i < data->height; ++i) {
-        for (int j = 0; j < data->width; ++j) {
-            data->pixel_map[i][j] = tmp[i][j];
-        }
-    }
+    sum[0] = H[0];
+    for (int i = 1; i < 256; ++i)
+        sum[i] = sum[i - 1] + H[i];
 
-    deallocate_matrix(tmp, data->height);
+    for (int i = 0; i < 256; ++i)
+        sum[i] = clamp(round(255. * (double)sum[i]) / (double)area);
+
+    for (int i = 0; i < data->height; ++i)
+        for (int j = 0; j < data->width; ++j)
+            data->pixel_map[i][j] = sum[data->pixel_map[i][j]];
 
     puts("Equalize done");
 }
