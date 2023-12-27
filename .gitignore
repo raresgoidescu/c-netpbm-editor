@@ -21,3 +21,5 @@ dummy
 .check.grade
 .checkpatch-camelcase.git.
 log.txt
+test.c
+v.out
