@@ -39,12 +39,6 @@ void parse_command(char buff[], char cmd[], char path[], char params[], char old
 				p = strtok(NULL, delims);
 				continue;
 			}
-			// FILE *test = fopen(path, "r");
-			// if (!test) {
-			// 	*l_err = 1;
-			// 	fclose(test);
-			// 	continue;
-			// }
 			*loaded = 1;
 			field++;
 			p = strtok(NULL, delims);

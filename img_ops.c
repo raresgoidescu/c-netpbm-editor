@@ -1,3 +1,6 @@
+#ifndef img_ops
+#define img_ops
+
 #include "img_struct.h"
 #include "err_handling.c"
 #include "mem_ops.c"
@@ -309,3 +312,5 @@ void apply(img_data *data, char *param, int from_x, int from_y, int to_x, int to
 
     printf("APPLY %s done\n", param);
 }
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef image_loading
+#define image_loading
+
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -5,6 +8,7 @@
 #include "img_struct.h"
 #include "mem_ops.c"
 #include "err_handling.c"
+#include "image_info.c"
 
 // Binary | ASCII | extension
 // -------+-------+----------
@@ -12,33 +16,33 @@
 //     P5 |    P2 | 	 .pgm
 //     P6 |    P3 | 	 .ppm
 
-void nonppm_load(FILE *f_ptr, const int height, const int width, const int binary, img_data *data)
+void nonppm_load(FILE *f_ptr, int binary, img_data *data)
 {
-    data->pixel_map = allocate_matrix(height, width);
+    data->pixel_map = allocate_matrix(data->height, data->width);
 
     if (binary)
-        for (int i = 0; i < height; ++i) {
-            for (int  j = 0; j < width; ++j) {
+        for (int i = 0; i < data->height; ++i) {
+            for (int  j = 0; j < data->width; ++j) {
                 int pixel = fgetc(f_ptr);
                 data->pixel_map[i][j] = pixel;
             }
         }
 
     if (!binary)
-        for (int i = 0; i < height; ++i) {
-            for (int  j = 0; j < width; ++j) {
+        for (int i = 0; i < data->height; ++i) {
+            for (int  j = 0; j < data->width; ++j) {
                 fscanf(f_ptr, "%d", &data->pixel_map[i][j]);
             }
         }
 }
 
-void ppm_load(FILE *f_ptr, const int height, const int width, const int binary, img_data *data)
+void ppm_load(FILE *f_ptr, int binary, img_data *data)
 {
-    data->pixel_map = allocate_matrix(height, width);
+    data->pixel_map = allocate_matrix(data->height, data->width);
 
     if (binary)
-        for (int i = 0; i < height; ++i) {
-            for (int  j = 0; j < width; ++j) {
+        for (int i = 0; i < data->height; ++i) {
+            for (int  j = 0; j < data->width; ++j) {
                 int r = fgetc(f_ptr);
                 int g = fgetc(f_ptr);
                 int b = fgetc(f_ptr);
@@ -47,8 +51,8 @@ void ppm_load(FILE *f_ptr, const int height, const int width, const int binary, 
         }
 
     if (!binary)
-        for (int i = 0; i < height; ++i) {
-            for (int  j = 0; j < width; ++j) {
+        for (int i = 0; i < data->height; ++i) {
+            for (int  j = 0; j < data->width; ++j) {
                 int r, g, b;
                 fscanf(f_ptr, "%d%d%d", &r, &g, &b);
                 data->pixel_map[i][j] = data->alpha << 24 | b << 16 | g << 8 | r;
@@ -58,37 +62,26 @@ void ppm_load(FILE *f_ptr, const int height, const int width, const int binary, 
 
 
 
-void load_image(const char *path, const char *mword, int *binary,
-                img_data *data, int *height, int *width)
+void load_image(const char *path, char *mword, img_data *data,
+                int *colored, int *binary)
 {
     FILE *f;
 
-    // printf("***%d\t%d***\n", *height, *width);
-    if (*height != 0 || *width != 0) {
+    if (data->height != 0 || data->width != 0)
         deallocate_matrix(data->pixel_map, data->height);
-    }
 
-    if ((strcmp(mword, "P4") == 0) ||
-        (strcmp(mword, "P5") == 0) ||
-        (strcmp(mword, "P6") == 0)) {
+    *binary = is_binary(path, mword);
+    *colored = is_colored(path, mword);
 
-        // Binary File (Raw)
-        *binary = 1;
+
+    if (*binary) {
         f = fopen(path, "rb");
-        if (!f) {
+        if (!f)
             printf("Failed to load %s\n", path);
-        }
-    } else if ((strcmp(mword, "P1") == 0) ||
-               (strcmp(mword, "P2") == 0) ||
-               (strcmp(mword, "P3") == 0)) {
-
-        // ASCII File (Plain text)
-        f = fopen(path, "r");
-        if (!f){
-            printf("Failed to load %s\n", path);
-        }
     } else {
-        printf("Failed to load %s\n", path);
+        f = fopen(path, "r");
+        if (!f)
+            printf("Failed to load %s\n", path);
     }
 
     // Citim headerul
@@ -117,21 +110,21 @@ void load_image(const char *path, const char *mword, int *binary,
 
     ungetc(spare_char, f);                // Punem cifra inapoi
 
-    int maxval;
-    fscanf(f, "%d%d%d\n", width, height, &maxval);
-    data->alpha = maxval;
+    int w, h, a;
+    fscanf(f, "%d%d%d\n", &w, &h, &a);
+    data->height = h;
+    data->width = w;
+    data->alpha = a;
 
     if (!(strcmp(mword, "P1")) || !(strcmp(mword, "P4")))
-        if (maxval != 1) {
-            /* Nu e alb negru */
-            printf("Failed to load %s\n", path);
+        if (data->alpha != 1) {
+            printf("Failed to load 1%s\n", path);
             fclose(f);
         }
     if (!(strcmp(mword, "P2")) || !(strcmp(mword, "P5")) ||
         !(strcmp(mword, "P3")) || !(strcmp(mword, "P6"))) {
-        if (maxval != 255) {
-            /* Maxval diferit de 255 */
-            printf("Failed to load %s\n", path);
+        if (data->alpha != 255) {
+            printf("Failed to load 2%s\n", path);
             fclose(f);
         }
     }
@@ -142,15 +135,15 @@ void load_image(const char *path, const char *mword, int *binary,
     //     P5 |    P2 | 	 .pgm
     //     P6 |    P3 | 	 .ppm
 
-    if (!(strcmp(mword, "P1")) || !(strcmp(mword, "P4"))) {
-        nonppm_load(f, *height, *width, *binary, data);
-    } else if (!(strcmp(mword, "P2")) || !(strcmp(mword, "P5"))) {
-        nonppm_load(f, *height, *width, *binary, data);
-    } else if (!(strcmp(mword, "P3")) || !(strcmp(mword, "P6"))) {
-        ppm_load(f, *height, *width, *binary, data);
+    if (*colored) {
+        ppm_load(f, *binary, data);
+    } else {
+        nonppm_load(f, *binary, data);
     }
 
     printf("Loaded %s\n", path);
 
     fclose(f);
 }
+
+#endif
