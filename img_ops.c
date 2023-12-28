@@ -23,14 +23,16 @@ void histogram(img_data data, int from_x, int from_y, int to_x, int to_y, int *f
 	}
 }
 
-long sum_from_0_to_a(int *v, int a) {
+long sum_from_0_to_a(int *v, int a)
+{
 	long sum = 0;
 	for (int i = 0; i < a; i++)
 		sum += v[i];
 	return sum;
 }
 
-int clamp(int value) {
+int clamp(int value)
+{
 	if (value < 0)
 		return 0;
 	if (value > 255)
@@ -38,9 +40,64 @@ int clamp(int value) {
 	return value;
 }
 
+unsigned int **copy_matrix_fx_fy_tx_ty(img_data data, int from_x, int from_y,
+									   int to_x, int to_y)
+{
+	int n = to_y - from_y, m = to_x - from_x;
+	unsigned int **tmp = allocate_matrix(n, m);
+
+	for (int i = from_y; i < to_y; ++i)
+		for (int j = from_x; j < from_x; ++j)
+			tmp[i - from_y][j - from_x] = data.pixel_map[i][j];
+
+	return tmp;
+}
+
+void upSideDown(img_data *data, int from_x, int from_y, int to_x, int to_y)
+{
+	int height = to_y - from_y, width = to_x - from_x;
+
+	for (int i = 0; i < height / 2; ++i) {
+		for (int j = 0; j < width; ++j) {
+			unsigned int aux = data->pixel_map[from_y + i][from_x + j];
+			data->pixel_map[from_y + i][from_x + j] = data->pixel_map[to_y - i - 1][to_x - j - 1];
+			data->pixel_map[to_y - i - 1][to_x - j - 1] = aux;
+		}
+	}
+
+	if (height % 2) {
+		for (int i = 0; i < width / 2; i++) {
+			unsigned int aux = data->pixel_map[from_y + height / 2][from_x + i];
+			data->pixel_map[from_y + height / 2][from_x + i] = data->pixel_map[from_y + height / 2][to_x - i - 1];
+			data->pixel_map[from_y + height / 2][to_x - i - 1] = aux;
+		}
+	}
+}
+
+void turnLeft(img_data *data, int from_x, int from_y, int to_x, int to_y, int all)
+{
+	unsigned int **tmp = copy_matrix_fx_fy_tx_ty(*data,
+												 from_x, from_y, to_x, to_y);
+
+	int height = to_y - from_y, width = to_x - from_x;
+
+
+
+	deallocate_matrix(tmp, height);
+}
+
+void turnRight(img_data *data, int from_x, int from_y, int to_x, int to_y, int all)
+{
+	unsigned int **tmp = copy_matrix_fx_fy_tx_ty(*data,
+												 from_x, from_y, to_x, to_y);
+
+	int height = to_y - from_y, width = to_x - from_x;
+
+	deallocate_matrix(tmp, height);
+}
+
 /*****************************EXPORTED FUNCTIONS******************************/
 
-/* Nu merge pentru pbm */
 void print_histogram(img_data data, int from_x, int from_y, int to_x, int to_y, int astks, int bins, int colored)
 {
 	/*
@@ -121,7 +178,7 @@ void crop(img_data *data, int *from_x, int *from_y, int *to_x, int *to_y)
 
 	width = *to_x - *from_x;
 	height = *to_y - *from_y;
-	// printf("%d\t|\t%d\n", height, width);
+
 	unsigned int **cropped_map = allocate_matrix(height, width);
 
 	for (int i = 0; i < height; ++i) {
@@ -153,7 +210,8 @@ void crop(img_data *data, int *from_x, int *from_y, int *to_x, int *to_y)
 	puts("Image cropped");
 }
 
-void apply(img_data *data, char *param, int from_x, int from_y, int to_x, int to_y, int colored)
+void apply(img_data *data, char *param, int from_x, int from_y,
+		   int to_x, int to_y, int colored)
 {
 	double edge_mat[3][3] = {{-1., -1., -1.},
 							 {-1., 8., -1.},
@@ -167,7 +225,6 @@ void apply(img_data *data, char *param, int from_x, int from_y, int to_x, int to
 	double g_blur_mat[3][3] = {{1 / 16., 2 / 16., 1 / 16.},
 							   {2 / 16., 4 / 16., 2 / 16.},
 							   {1 / 16., 2 / 16., 1 / 16.}};
-
 
 	double **kernel = allocate_double_matrix(3, 3);
 
@@ -219,10 +276,11 @@ void apply(img_data *data, char *param, int from_x, int from_y, int to_x, int to
 
 			for (int k = 0; k < 3; k++)
 				for (int l = 0; l < 3; l++) {
-					int alph = data->pixel_map[i + k - 1][j + l - 1] >> 24;
-					blue[k][l] = (data->pixel_map[i + k - 1][j + l - 1] >> 16) & alph;
-					green[k][l] = (data->pixel_map[i + k - 1][j + l - 1] >> 8) & alph;
-					red[k][l] = (data->pixel_map[i + k - 1][j + l - 1]) & alph;
+					unsigned int p = data->pixel_map[i + k - 1][j + l - 1];
+					int alph = p >> 24;
+					blue[k][l] = (p >> 16) & alph;
+					green[k][l] = (p >> 8) & alph;
+					red[k][l] = (p) & alph;
 				}
 
 			double new_red = 0, new_green = 0, new_blue = 0;
@@ -261,7 +319,9 @@ void apply(img_data *data, char *param, int from_x, int from_y, int to_x, int to
 	printf("APPLY %s done\n", param);
 }
 
-void rotate(img_data *data, int from_x, int from_y, int to_x, int to_y, int angle) {
+void rotate(img_data *data, int from_x, int from_y, int to_x, int to_y,
+			int angle)
+{
 	if (abs(angle) % 90 != 0) {
 		puts("Unsupported rotation angle");
 		return;
@@ -279,17 +339,40 @@ void rotate(img_data *data, int from_x, int from_y, int to_x, int to_y, int angl
 		}
 	}
 
-	unsigned int **tmp = allocate_matrix(r_height, r_width);
+	/*
+		360 => 0       | -360 =>  0
+		270 => 3 => -1 | -270 => -3 => 1
+		180 => 2 =>  2 | -180 => -2 => 2
+		 90 => 1       |  -90 => -1
+		  0 => 0       |   -0 =>  0
+	*/
 
-	for (int i = from_y; i < to_y; ++i) {
-		for (int j = from_x; j < to_x; ++j) {
-			tmp[i][j] = data->pixel_map[i][j];
-		}
+	int simple_angle = (angle / 90) % 4;
+
+	simple_angle = (simple_angle == -3) ? 1 : simple_angle;
+	simple_angle = (simple_angle == 3) ? -1 : simple_angle;
+	simple_angle = (abs(simple_angle) == 2) ? 2 : simple_angle;
+
+	if (simple_angle == 0) {
+		printf("Rotated %d\n", angle);
+		return;
 	}
 
-	int simple_angle = angle / 90;
+	// DACA DAI ROTATE STANGA DREAPTA, DIMENSIUNILE MATRICEI SE MODIFICA
+	// simple_angle ==  2 => upSideDown()
+	// simple_angle ==  1 =>  turnRight()
+	// simple_angle == -1 =>   turnLeft()
 
-	deallocate_matrix(tmp, r_height);
+	if (simple_angle == 2) {
+		upSideDown(data, from_x, from_y, to_x, to_y);
+	}
+	// else if (simple_angle == 1) {
+	// 	turnRight();
+	// } else if (simple_angle == -1) {
+	// 	turnLeft();
+	// }
+
+	printf("Rotated %d\n", angle);
 }
 
 #endif

@@ -22,7 +22,8 @@ int main(void)
 	int astks = 0, bins = 0, angle = 0;
 	int coords[4], backupcoords[4];
 
-	int select_err = 0, rotate_err = 0;
+	int select_err = 0;
+	//rotate_err = 0;
 
 	img_data data;
 	data.height = 0;
@@ -150,7 +151,7 @@ int main(void)
 			}
 		} else if (!strcmp(cmd, "ROTATE")) {
 			if (loaded) {
-				puts("ROTATE not implemented");
+				rotate(&data, coords[0], coords[1], coords[2], coords[3], angle);
 			} else {
 				puts("No image loaded");
 			}
