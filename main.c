@@ -80,6 +80,11 @@ int main(void)
 						coords[3] = data.height;
 						puts("Selected ALL");
 					} else {
+						if (coords[0] > coords[2])
+							my_swap(&coords[0], &coords[2]);
+						if (coords[1] > coords[3])
+							my_swap(&coords[1], &coords[3]);
+
 						int valid_selection = 1; // Benefit of the doubt
 						for (int i = 0; i < 4; i++) {
 							if (coords[i] < 0)
@@ -87,8 +92,7 @@ int main(void)
 						}
 						if (coords[2] > data.width || coords[3] > data.height)
 							valid_selection = 0;
-						if (coords[0] > data.width || coords[1] > data.height)
-							valid_selection = 0;
+
 						if (coords[0] == coords[2] || coords[1] == coords[3])
 							valid_selection = 0;
 
@@ -103,10 +107,6 @@ int main(void)
 								coords[i] = backupcoords[i];
 							continue;
 						}
-						if (coords[0] > coords[2])
-							my_swap(&coords[0], &coords[2]);
-						if (coords[1] > coords[3])
-							my_swap(&coords[1], &coords[3]);
 						printf("Selected %d %d %d %d\n", coords[0], coords[1],
 							coords[2], coords[3]);
 					}
@@ -151,7 +151,7 @@ int main(void)
 			}
 		} else if (!strcmp(cmd, "ROTATE")) {
 			if (loaded) {
-				rotate(&data, coords[0], coords[1], coords[2], coords[3], angle);
+				rotate(&data, &coords[0], &coords[1], &coords[2], &coords[3], angle);
 			} else {
 				puts("No image loaded");
 			}

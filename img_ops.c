@@ -3,6 +3,7 @@
 
 #include "img_struct.h"
 #include "err_handling.c"
+#include "basic_ops.c"
 #include "mem_ops.c"
 #include <math.h>
 #include <stdio.h>
@@ -40,19 +41,6 @@ int clamp(int value)
 	return value;
 }
 
-unsigned int **copy_matrix_fx_fy_tx_ty(img_data data, int from_x, int from_y,
-									   int to_x, int to_y)
-{
-	int n = to_y - from_y, m = to_x - from_x;
-	unsigned int **tmp = allocate_matrix(n, m);
-
-	for (int i = from_y; i < to_y; ++i)
-		for (int j = from_x; j < from_x; ++j)
-			tmp[i - from_y][j - from_x] = data.pixel_map[i][j];
-
-	return tmp;
-}
-
 void upSideDown(img_data *data, int from_x, int from_y, int to_x, int to_y)
 {
 	int height = to_y - from_y, width = to_x - from_x;
@@ -74,26 +62,82 @@ void upSideDown(img_data *data, int from_x, int from_y, int to_x, int to_y)
 	}
 }
 
-void turnLeft(img_data *data, int from_x, int from_y, int to_x, int to_y, int all)
+void turnLeft(img_data *data, int *from_x, int *from_y, int *to_x, int *to_y, int all)
 {
-	unsigned int **tmp = copy_matrix_fx_fy_tx_ty(*data,
-												 from_x, from_y, to_x, to_y);
+	int height = *to_y - *from_y, width = *to_x - *from_x;
 
-	int height = to_y - from_y, width = to_x - from_x;
+	unsigned int **tmp = allocate_matrix(width, height);
 
+	for (int i = 0; i < height; i++) {
+		for (int j = 0; j < width; j++) {
+			// printf("tmp:\n\th:%6d; w:%6d\nimf:\n\th:%6d; w:%6d\n", width - j, i, *from_y + i, *from_x + j);
+			tmp[width - j - 1][i] = data->pixel_map[*from_y + i][*from_x + j];
+		}
+	}
 
+	if (all) {
+		deallocate_matrix(data->pixel_map, data->height);
 
-	deallocate_matrix(tmp, height);
+		data->height = width;
+		data->width = height;
+		data->pixel_map = allocate_matrix(data->height, data->width);
+
+		for (int i = 0; i < data->height; ++i) {
+			for (int j = 0; j < data->width; ++j) {
+				data->pixel_map[i][j] = tmp[i][j];
+			}
+		}
+
+		my_swap(from_x, from_y);
+		my_swap(to_x, to_y);
+	} else {
+		for (int i = 0; i < height; ++i) {
+			for (int j = 0; j < width; ++j) {
+				data->pixel_map[*from_x + i][*from_y + j] = tmp[i][j];
+			}
+		}
+	}
+
+	deallocate_matrix(tmp, width);
 }
 
-void turnRight(img_data *data, int from_x, int from_y, int to_x, int to_y, int all)
+void turnRight(img_data *data, int *from_x, int *from_y, int *to_x, int *to_y, int all)
 {
-	unsigned int **tmp = copy_matrix_fx_fy_tx_ty(*data,
-												 from_x, from_y, to_x, to_y);
+	int height = *to_y - *from_y, width = *to_x - *from_x;
 
-	int height = to_y - from_y, width = to_x - from_x;
+	unsigned int **tmp = allocate_matrix(width, height);
 
-	deallocate_matrix(tmp, height);
+	for (int i = 0; i < height; i++) {
+		for (int j = 0; j < width; j++) {
+			// printf("tmp:\n\th:%6d; w:%6d\nimf:\n\th:%6d; w:%6d\n", width - j, i, *from_y + i, *from_x + j);
+			tmp[j][height - i - 1] = data->pixel_map[*from_y + i][*from_x + j];
+		}
+	}
+
+	if (all) {
+		deallocate_matrix(data->pixel_map, data->height);
+
+		data->height = width;
+		data->width = height;
+		data->pixel_map = allocate_matrix(data->height, data->width);
+
+		for (int i = 0; i < data->height; ++i) {
+			for (int j = 0; j < data->width; ++j) {
+				data->pixel_map[i][j] = tmp[i][j];
+			}
+		}
+
+		my_swap(from_x, from_y);
+		my_swap(to_x, to_y);
+	} else {
+		for (int i = 0; i < height; ++i) {
+			for (int j = 0; j < width; ++j) {
+				data->pixel_map[*from_x + i][*from_y + j] = tmp[i][j];
+			}
+		}
+	}
+
+	deallocate_matrix(tmp, width);
 }
 
 /*****************************EXPORTED FUNCTIONS******************************/
@@ -319,7 +363,7 @@ void apply(img_data *data, char *param, int from_x, int from_y,
 	printf("APPLY %s done\n", param);
 }
 
-void rotate(img_data *data, int from_x, int from_y, int to_x, int to_y,
+void rotate(img_data *data, int *from_x, int *from_y, int *to_x, int *to_y,
 			int angle)
 {
 	if (abs(angle) % 90 != 0) {
@@ -327,8 +371,8 @@ void rotate(img_data *data, int from_x, int from_y, int to_x, int to_y,
 		return;
 	}
 
-	int r_height = to_y - from_y;
-	int r_width = to_x - from_x;
+	int r_height = *to_y - *from_y;
+	int r_width = *to_x - *from_x;
 
 	int all = (r_height == data->height && r_width == data->width) ? 1 : 0;
 
@@ -364,13 +408,12 @@ void rotate(img_data *data, int from_x, int from_y, int to_x, int to_y,
 	// simple_angle == -1 =>   turnLeft()
 
 	if (simple_angle == 2) {
-		upSideDown(data, from_x, from_y, to_x, to_y);
+		upSideDown(data, *from_x, *from_y, *to_x, *to_y);
+	} else if (simple_angle == -1) {
+		turnLeft(data, from_x, from_y, to_x, to_y, all);
+	} else if (simple_angle == 1) {
+	 	turnRight(data, from_x, from_y, to_x, to_y, all);
 	}
-	// else if (simple_angle == 1) {
-	// 	turnRight();
-	// } else if (simple_angle == -1) {
-	// 	turnLeft();
-	// }
 
 	printf("Rotated %d\n", angle);
 }
