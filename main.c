@@ -23,7 +23,6 @@ int main(void)
 	int coords[4], backupcoords[4];
 
 	int select_err = 0;
-	//rotate_err = 0;
 
 	img_data data;
 	data.height = 0;
@@ -36,10 +35,9 @@ int main(void)
 			if (data.height) {
 				deallocate_matrix(data.pixel_map, data.height);
 				break;
-			} else {
-			 	puts("No image loaded");
-				break;
 			}
+			puts("No image loaded");
+			break;
 		}
 		parse(cmd, buffer, path, save_path, param,
 			  &ascii, &ok_load, coords, backupcoords, &all, &selected,
@@ -57,6 +55,7 @@ int main(void)
 				coords[3] = data.height;
 				loaded = 1;
 				//printf("***\tl:%d b:%d c:%d\n", loaded, binary, colored);
+				//printf("***h:%6d w:%6d\n", data.height, data.width);
 			} else {
 				if (data.height)
 					deallocate_matrix(data.pixel_map, data.height);
@@ -71,7 +70,6 @@ int main(void)
 			}
 		} else if (!strcmp(cmd, "SELECT")) {
 			if (loaded) {
-				//printf("b4: %d | %d | %d | %d\n", coords[0], coords[1], coords[2], coords[3]);
 				if (!select_err) {
 					if (all) {
 						coords[0] = 0;
@@ -98,7 +96,7 @@ int main(void)
 
 						int all_eq = 1;
 						for (int i = 0; i < 3; i++) {
-							if (coords[i] != coords[i+1])
+							if (coords[i] != coords[i + 1])
 								all_eq = 0;
 						}
 						if (!valid_selection || all_eq) {
@@ -108,10 +106,9 @@ int main(void)
 							continue;
 						}
 						printf("Selected %d %d %d %d\n", coords[0], coords[1],
-							coords[2], coords[3]);
+							   coords[2], coords[3]);
 					}
 				}
-				//printf("fi: %d | %d | %d | %d\n", coords[0], coords[1], coords[2], coords[3]);
 			} else {
 				all = 1;
 				coords[0] = 0;
@@ -135,38 +132,36 @@ int main(void)
 				}
 			}
 		} else if (!strcmp(cmd, "EQUALIZE")) {
-			if (loaded) {
+			if (loaded)
 				equalize(&data, colored);
-			} else {
+			else
 				puts("No image loaded");
-			}
 		} else if (!strcmp(cmd, "APPLY")) {
 			if (loaded) {
 				if (param[0] != '0')
-					apply(&data, param, coords[0], coords[1], coords[2], coords[3], colored);
+					apply(&data, param,
+						  coords[0], coords[1], coords[2], coords[3], colored);
 				else
 					puts("Invalid command");
 			} else {
 				puts("No image loaded");
 			}
 		} else if (!strcmp(cmd, "ROTATE")) {
-			if (loaded) {
-				rotate(&data, &coords[0], &coords[1], &coords[2], &coords[3], angle);
-			} else {
+			if (loaded)
+				rotate(&data, &coords[0], &coords[1], &coords[2], &coords[3],
+					   angle);
+			else
 				puts("No image loaded");
-			}
 		} else if (!strcmp(cmd, "CROP")) {
-			if (loaded) {
+			if (loaded)
 				crop(&data, &coords[0], &coords[1], &coords[2], &coords[3]);
-			} else {
+			else
 				puts("No image loaded");
-			}
 		} else if (!strcmp(cmd, "SAVE")) {
-			if (loaded) {
+			if (loaded)
 				save(data, magic_word, save_path, ascii, colored);
-			} else {
+			else
 				puts("No image loaded");
-			}
 		}
 	}
 	return 0;

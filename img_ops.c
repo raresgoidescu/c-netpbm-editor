@@ -93,7 +93,7 @@ void turnLeft(img_data *data, int *from_x, int *from_y, int *to_x, int *to_y, in
 	} else {
 		for (int i = 0; i < height; ++i) {
 			for (int j = 0; j < width; ++j) {
-				data->pixel_map[*from_x + i][*from_y + j] = tmp[i][j];
+				data->pixel_map[*from_y + i][*from_x + j] = tmp[i][j];
 			}
 		}
 	}
@@ -132,7 +132,7 @@ void turnRight(img_data *data, int *from_x, int *from_y, int *to_x, int *to_y, i
 	} else {
 		for (int i = 0; i < height; ++i) {
 			for (int j = 0; j < width; ++j) {
-				data->pixel_map[*from_x + i][*from_y + j] = tmp[i][j];
+				data->pixel_map[*from_y + i][*from_x + j] = tmp[i][j];
 			}
 		}
 	}
