@@ -14,7 +14,7 @@ int file_exists(char *path)
 		return 0;
 	}
 
-	FILE *f = fopen(path, "r");
+	FILE * f = fopen(path, "r");
 
 	if (!f) {
 		printf("Failed to load %s\n", path);
@@ -40,7 +40,7 @@ int file_exists(char *path)
 
 int want_ascii(char *param)
 {
-	if (param == NULL)
+	if (!param)
 		return 0;
 
 	if (!strcmp(param, "ascii"))
@@ -56,10 +56,8 @@ int cmd_not_found(char *cmd)
 		strcmp(cmd, "HISTOGRAM") && strcmp(cmd, "EQUALIZE") &&
 		strcmp(cmd, "ROTATE") && strcmp(cmd, "CROP") &&
 		strcmp(cmd, "APPLY") && strcmp(cmd, "SAVE") && strcmp(cmd, "EXIT")) {
-
 		printf("Invalid command\n");
 		return 0;
-
 	}
 
 	return 1;
@@ -74,7 +72,7 @@ void parse(char *cmd, char *buffer, char *path, char *save_path, char *param,
 	//int lenght = strlen(buffer) - 1;
 	//buffer[lenght] = '\0';
 
-	char delims[] = " \n";
+	char delims[] = "\n ";
 
 	char *p = strtok(buffer, delims);
 	int field = 0;
@@ -93,7 +91,6 @@ void parse(char *cmd, char *buffer, char *path, char *save_path, char *param,
 		}
 
 		if (field == 1) {
-
 			if (!strcmp(cmd, "EXIT")) {
 				return;
 			} else if (!strcmp(cmd, "LOAD")) {
@@ -114,52 +111,50 @@ void parse(char *cmd, char *buffer, char *path, char *save_path, char *param,
 					*all = 1;
 					field = 5;
 					break;
-				} else {
-					for (int i = 0; i < 4; i++)
-						bckup[i] = coords[i];
+				}
+				for (int i = 0; i < 4; i++)
+					bckup[i] = coords[i];
 
-					int k = -1;
-					while (p) {
-						if (!isalpha(p[0])) {
-							coords[++k] = atoi(p);
-						} else {
-							for (int i = 0; i < 4; i++)
-								coords[i] = bckup[i];
-							// puts("Invalid command (letter found)");
-							puts("Invalid command");
-
-							*all = (*all == 1) ? 1 : 0;
-							*selected = (*selected == 1) ? 1 : 0;
-
-							*select_err = 1;
-							return;
-						}
-
-						field++;
-						p = strtok(NULL, delims);
-					}
-
-					*select_err = 0;
-					//printf("** f: %d | err: %d **\n", field, *select_err);
-					if (field != 5 && !(*select_err)) {
-
+				int k = -1;
+				while (p) {
+					if (!isalpha(p[0])) {
+						coords[++k] = atoi(p);
+					} else {
 						for (int i = 0; i < 4; i++)
 							coords[i] = bckup[i];
+						// puts("Invalid command (letter found)");
+						puts("Invalid command");
 
 						*all = (*all == 1) ? 1 : 0;
-							*selected = (*selected == 1) ? 1 : 0;
-
-						// puts("Invalid command (not enough coords)");
-						puts("Invalid command");
+						*selected = (*selected == 1) ? 1 : 0;
 
 						*select_err = 1;
 						return;
 					}
 
-					*selected = 1;
-					*all = 0;
-					break;
+					field++;
+					p = strtok(NULL, delims);
 				}
+
+				*select_err = 0;
+				//printf("** f: %d | err: %d **\n", field, *select_err);
+				if (field != 5 && !(*select_err)) {
+					for (int i = 0; i < 4; i++)
+						coords[i] = bckup[i];
+
+					*all = (*all == 1) ? 1 : 0;
+						*selected = (*selected == 1) ? 1 : 0;
+
+					// puts("Invalid command (not enough coords)");
+					puts("Invalid command");
+
+					*select_err = 1;
+					return;
+				}
+
+				*selected = 1;
+				*all = 0;
+				break;
 			} else if (!strcmp(cmd, "HISTOGRAM")) {
 				if (!p) {
 					*astks = -1;
@@ -189,7 +184,7 @@ void parse(char *cmd, char *buffer, char *path, char *save_path, char *param,
 			} else if (!strcmp(cmd, "CROP")) {
 				return;
 			} else if (!strcmp(cmd, "APPLY")) {
-				if (p == NULL) {
+				if (!p) {
 					param[0] = '0';
 					return;
 				}
@@ -206,7 +201,6 @@ void parse(char *cmd, char *buffer, char *path, char *save_path, char *param,
 
 				return;
 			}
-
 		}
 
 		field++;

@@ -12,9 +12,9 @@
 
 // Binary | ASCII | extension
 // -------+-------+----------
-//     P4 |    P1 | 	 .pbm
-//     P5 |    P2 | 	 .pgm
-//     P6 |    P3 | 	 .ppm
+//	   P4 |	   P1 |		 .pbm
+//	   P5 |	   P2 |		 .pgm
+//	   P6 |	   P3 |		 .ppm
 
 void nonppm_load(FILE *f_ptr, int binary, img_data *data)
 {
@@ -29,11 +29,9 @@ void nonppm_load(FILE *f_ptr, int binary, img_data *data)
 		}
 
 	if (!binary)
-		for (int i = 0; i < data->height; ++i) {
-			for (int  j = 0; j < data->width; ++j) {
+		for (int i = 0; i < data->height; ++i)
+			for (int  j = 0; j < data->width; ++j)
 				fscanf(f_ptr, "%d", &data->pixel_map[i][j]);
-			}
-		}
 }
 
 void ppm_load(FILE *f_ptr, int binary, img_data *data)
@@ -46,21 +44,20 @@ void ppm_load(FILE *f_ptr, int binary, img_data *data)
 				int r = fgetc(f_ptr);
 				int g = fgetc(f_ptr);
 				int b = fgetc(f_ptr);
-				data->pixel_map[i][j] = data->alpha << 24 | b << 16 | g << 8 | r;
+				int alph = data->alpha;
+				data->pixel_map[i][j] = alph << 24 | b << 16 | g << 8 | r;
 			}
 		}
 
 	if (!binary)
 		for (int i = 0; i < data->height; ++i) {
 			for (int  j = 0; j < data->width; ++j) {
-				int r, g, b;
+				int r, g, b, alph = data->alpha;
 				fscanf(f_ptr, "%d%d%d", &r, &g, &b);
-				data->pixel_map[i][j] = data->alpha << 24 | b << 16 | g << 8 | r;
+				data->pixel_map[i][j] = alph << 24 | b << 16 | g << 8 | r;
 			}
 		}
 }
-
-
 
 void load_image(const char *path, char *mword, img_data *data,
 				int *colored, int *binary)
@@ -72,7 +69,6 @@ void load_image(const char *path, char *mword, img_data *data,
 
 	*binary = is_binary(path, mword);
 	*colored = is_colored(path, mword);
-
 
 	if (*binary) {
 		f = fopen(path, "rb");
@@ -89,6 +85,7 @@ void load_image(const char *path, char *mword, img_data *data,
 	if (fscanf(f, "P%c\n", &spare_char) != 1) {
 		printf("Failed to load %s\n", path);
 		fclose(f);
+		return;
 	}
 
 	// Trecem peste comentarii
@@ -96,50 +93,48 @@ void load_image(const char *path, char *mword, img_data *data,
 	spare_char = fgetc(f);
 	while (spare_char == '#') {
 		spare_char = fgetc(f);
-		while (spare_char != '\n') {
+		while (spare_char != '\n')
 			spare_char = fgetc(f);
-		}
-		spare_char =fgetc(f);
+		spare_char = fgetc(f);
 	}
 
 	// Invalid content
 	if (!(isdigit(spare_char))) {
 		printf("Failed to load %s\n", path);
 		fclose(f);
+		return;
 	}
 
 	ungetc(spare_char, f);                // Punem cifra inapoi
 
 	int w, h, a;
 	fscanf(f, "%d%d%d\n", &w, &h, &a);
-	data->height = h;
-	data->width = w;
-	data->alpha = a;
+	data->height = h; data->width = w; data->alpha = a;
 
 	if (!(strcmp(mword, "P1")) || !(strcmp(mword, "P4")))
 		if (data->alpha != 1) {
 			printf("Failed to load 1%s\n", path);
 			fclose(f);
+			return;
 		}
 	if (!(strcmp(mword, "P2")) || !(strcmp(mword, "P5")) ||
-		!(strcmp(mword, "P3")) || !(strcmp(mword, "P6"))) {
+		!(strcmp(mword, "P3")) || !(strcmp(mword, "P6")))
 		if (data->alpha != 255) {
 			printf("Failed to load 2%s\n", path);
 			fclose(f);
+			return;
 		}
-	}
 
 	// Binary | ASCII | extension
 	// -------+-------+----------
-	//     P4 |    P1 | 	 .pbm
-	//     P5 |    P2 | 	 .pgm
-	//     P6 |    P3 | 	 .ppm
+	//	   P4 |	   P1 |		 .pbm
+	//	   P5 |	   P2 |		 .pgm
+	//	   P6 |	   P3 |		 .ppm
 
-	if (*colored) {
+	if (*colored)
 		ppm_load(f, *binary, data);
-	} else {
+	else
 		nonppm_load(f, *binary, data);
-	}
 
 	printf("Loaded %s\n", path);
 
@@ -149,23 +144,21 @@ void load_image(const char *path, char *mword, img_data *data,
 void save(img_data data, char *mword, char *path, int ascii, int colored)
 {
 	FILE *f;
-	if (!ascii) {
+	if (!ascii)
 		f = fopen(path, "wb");
-	} else {
+	else
 		f = fopen(path, "w");
-	}
 
 	if (!f)
 		perr("Cant open file");
 
 	// Binary | ASCII | extension
 	// -------+-------+----------
-	//     P4 |    P1 | 	 .pbm
-	//     P5 |    P2 | 	 .pgm
-	//     P6 |    P3 | 	 .ppm
+	//	   P4 |	   P1 |		 .pbm
+	//	   P5 |	   P2 |		 .pgm
+	//	   P6 |	   P3 |		 .ppm
 
 	if (colored) {
-
 		if (ascii && !strcmp(mword, "P6"))
 			mword[1] = '3';
 		if (!ascii && !strcmp(mword, "P3"))
@@ -205,11 +198,10 @@ void save(img_data data, char *mword, char *path, int ascii, int colored)
 		for (int i = 0; i < data.height; ++i) {
 			for (int j = 0; j < data.width; ++j) {
 				int pixel = data.pixel_map[i][j];
-				if (!ascii) {
+				if (!ascii)
 					fputc(pixel, f);
-				} else {
+				else
 					fprintf(f, "%d ", pixel);
-				}
 			}
 			if (ascii)
 				fprintf(f, "\n");
