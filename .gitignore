@@ -9,6 +9,7 @@ z.out
 /tasks
 /tests
 /target
+/images
 Cargo.lock
 Cargo.toml
 check
