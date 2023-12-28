@@ -71,8 +71,8 @@ void parse(char *cmd, char *buffer, char *path, char *save_path, char *param,
            int *ascii, int *ok_load, int *coords, int *bckup, int *all,
            int *selected, int *astks, int *bins, int *angle)
 {
-    int lenght = strlen(buffer) - 1;
-	buffer[lenght] = '\0';
+    //int lenght = strlen(buffer) - 1;
+	//buffer[lenght] = '\0';
 
     char delims[] = " \n";
 
@@ -112,10 +112,11 @@ void parse(char *cmd, char *buffer, char *path, char *save_path, char *param,
                 *selected = 1;
                 if (!strcmp(p, "ALL")) {
                     *all = 1;
+                    field = 5;
                     break;
                 } else {
-                    if (!isalpha(p[0]) && !isalpha(p[2]) &&
-                        !isalpha(p[4]) && !isalpha(p[6])) {
+                    //if (p == NULL)
+                    if (!isalpha(p[0])) {
 
                         for (int k = 0; k < 4; k++) {
                             bckup[k] = coords[k];
@@ -183,4 +184,9 @@ void parse(char *cmd, char *buffer, char *path, char *save_path, char *param,
         p = strtok(NULL, delims);
         continue;
     }
+
+    if (!strcmp(cmd, "HISTOGRAM") && field == 1)
+        *astks = -1;
+    if (!strcmp(cmd, "SELECT") && field < 5)
+        puts("sal");
 }

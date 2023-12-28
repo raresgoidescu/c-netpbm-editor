@@ -85,6 +85,8 @@ int main(void)
                         valid_selection = 0;
                     if (coords[0] > data.width || coords[1] > data.height)
                         valid_selection = 0;
+                    if (coords[0] == coords[2] || coords[1] == coords[3])
+                        valid_selection = 0;
 
                     int all_eq = 1;
                     for (int i = 0; i < 3; i++) {
