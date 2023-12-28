@@ -69,7 +69,7 @@ int cmd_not_found(char *cmd)
 
 void parse(char *cmd, char *buffer, char *path, char *save_path, char *param,
            int *ascii, int *ok_load, int *coords, int *bckup, int *all,
-           int *selected, int *astks, int *bins, int *angle)
+           int *selected, int *astks, int *bins, int *angle, int *select_err)
 {
     //int lenght = strlen(buffer) - 1;
 	//buffer[lenght] = '\0';
@@ -115,21 +115,52 @@ void parse(char *cmd, char *buffer, char *path, char *save_path, char *param,
                     field = 5;
                     break;
                 } else {
-                    //if (p == NULL)
-                    if (!isalpha(p[0])) {
+                    for (int i = 0; i < 4; i++)
+                        bckup[i] = coords[i];
 
-                        for (int k = 0; k < 4; k++) {
-                            bckup[k] = coords[k];
-                            coords[k] = atoi(p);
-                            field++;
-                            p = strtok(NULL, delims);
+                    int k = -1;
+                    while (p) {
+                        if (!isalpha(p[0])) {
+                            coords[++k] = atoi(p);
+                        } else {
+                            for (int i = 0; i < 4; i++)
+                                coords[i] = bckup[i];
+                            // puts("Invalid command (letter found)");
+                            puts("Invalid command");
+
+                            *all = (*all == 1) ? 1 : 0;
+                            *selected = (*selected == 1) ? 1 : 0;
+
+                            *select_err = 1;
+                            return;
                         }
 
-                        *all = 0;
-                        break;
-                    } else {
-                        puts("Invalid set of coordinates lol");
+                        field++;
+                        p = strtok(NULL, delims);
                     }
+
+                    *select_err = 0;
+                    //printf("** f: %d | err: %d **\n", field, *select_err);
+                    if (field != 5 && !(*select_err)) {
+
+                        for (int i = 0; i < 4; i++)
+                            coords[i] = bckup[i];
+
+                        *all = (*all == 1) ? 1 : 0;
+                            *selected = (*selected == 1) ? 1 : 0;
+
+                        // puts("Invalid command (not enough coords)");
+                        puts("Invalid command");
+
+                        *select_err = 1;
+                        return;
+                    }
+                    //puts("valid");
+
+                    *selected = 1;
+                    *all = 0;
+                    break;
+
                 }
             } else if (!strcmp(cmd, "HISTOGRAM")) {
                 if (p == NULL) {
@@ -187,6 +218,4 @@ void parse(char *cmd, char *buffer, char *path, char *save_path, char *param,
 
     if (!strcmp(cmd, "HISTOGRAM") && field == 1)
         *astks = -1;
-    if (!strcmp(cmd, "SELECT") && field < 5)
-        puts("sal");
 }

@@ -23,6 +23,8 @@ int main(void)
     int astks = 0, bins = 0, angle = 0;
     int coords[4], backupcoords[4];
 
+    int select_err = 0, rotate_err = 0;
+
     img_data data;
     data.height = 0;
     data.width = 0;
@@ -41,7 +43,7 @@ int main(void)
         }
         parse(cmd, buffer, path, save_path, param,
               &ascii, &ok_load, coords, backupcoords, &all, &selected,
-              &astks, &bins, &angle);
+              &astks, &bins, &angle, &select_err);
         if (!strcmp(cmd, "LOAD")) {
             if (ok_load) {
                 load_image(path, magic_word, &data, &colored, &binary);
@@ -69,43 +71,47 @@ int main(void)
             }
         } else if (!strcmp(cmd, "SELECT")) {
             if (loaded) {
-                if (all) {
-                    coords[0] = 0;
-                    coords[1] = 0;
-                    coords[2] = data.width;
-                    coords[3] = data.height;
-                    puts("Selected ALL");
-                } else {
-                    int valid_selection = 1; // Benefit of the doubt
-                    for (int i = 0; i < 4; i++) {
-                        if (coords[i] < 0)
+                //printf("b4: %d | %d | %d | %d\n", coords[0], coords[1], coords[2], coords[3]);
+                if (!select_err) {
+                    if (all) {
+                        coords[0] = 0;
+                        coords[1] = 0;
+                        coords[2] = data.width;
+                        coords[3] = data.height;
+                        puts("Selected ALL");
+                    } else {
+                        int valid_selection = 1; // Benefit of the doubt
+                        for (int i = 0; i < 4; i++) {
+                            if (coords[i] < 0)
+                                valid_selection = 0;
+                        }
+                        if (coords[2] > data.width || coords[3] > data.height)
                             valid_selection = 0;
-                    }
-                    if (coords[2] > data.width || coords[3] > data.height)
-                        valid_selection = 0;
-                    if (coords[0] > data.width || coords[1] > data.height)
-                        valid_selection = 0;
-                    if (coords[0] == coords[2] || coords[1] == coords[3])
-                        valid_selection = 0;
+                        if (coords[0] > data.width || coords[1] > data.height)
+                            valid_selection = 0;
+                        if (coords[0] == coords[2] || coords[1] == coords[3])
+                            valid_selection = 0;
 
-                    int all_eq = 1;
-                    for (int i = 0; i < 3; i++) {
-                        if (coords[i] != coords[i+1])
-                            all_eq = 0;
+                        int all_eq = 1;
+                        for (int i = 0; i < 3; i++) {
+                            if (coords[i] != coords[i+1])
+                                all_eq = 0;
+                        }
+                        if (!valid_selection || all_eq) {
+                            puts("Invalid set of coordinates");
+                            for (int i = 0; i < 4; ++i)
+                                coords[i] = backupcoords[i];
+                            continue;
+                        }
+                        if (coords[0] > coords[2])
+                            my_swap(&coords[0], &coords[2]);
+                        if (coords[1] > coords[3])
+                            my_swap(&coords[1], &coords[3]);
+                        printf("Selected %d %d %d %d\n", coords[0], coords[1],
+                            coords[2], coords[3]);
                     }
-                    if (!valid_selection || all_eq) {
-                        puts("Invalid set of coordinates");
-                        for (int i = 0; i < 4; ++i)
-                            coords[i] = backupcoords[i];
-                        continue;
-                    }
-                    if (coords[0] > coords[2])
-						my_swap(&coords[0], &coords[2]);
-					if (coords[1] > coords[3])
-						my_swap(&coords[1], &coords[3]);
-                    printf("Selected %d %d %d %d\n", coords[0], coords[1],
-                        coords[2], coords[3]);
                 }
+                //printf("fi: %d | %d | %d | %d\n", coords[0], coords[1], coords[2], coords[3]);
             } else {
                 all = 1;
                 coords[0] = 0;
