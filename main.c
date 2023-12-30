@@ -13,6 +13,11 @@
 #include "image_loading.c"
 #define BUFFERMAX 500
 
+void process_cmd(char *buffer, char *cmd, char *path, char *save_path, char *param, int coords[4], int backupcoords[4])
+{
+    
+}
+
 int main(void)
 {
 	char buffer[BUFFERMAX], cmd[200], path[200], save_path[200], param[200];
