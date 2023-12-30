@@ -2,9 +2,8 @@
 #define img_ops
 
 #include "img_struct.h"
-#include "err_handling.c"
 #include "basic_ops.c"
-#include "mem_ops.c"
+#include "mem_ops.h"
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>

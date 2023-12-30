@@ -1,7 +1,7 @@
 // Copyright Rares-Stefan Goidescu 312CAb 2023-2024
 #include <stdio.h>
 #include <string.h>
-#include "mem_ops.c"
+#include "mem_ops.h"
 #include "basic_ops.c"
 #include "img_struct.h"
 #include "parsing.c"

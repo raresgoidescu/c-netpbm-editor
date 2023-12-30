@@ -1,9 +1,7 @@
-#ifndef mem_ops
-#define mem_ops
-
 #include <stdlib.h>
 #include <stdio.h>
 
+/*************************PRIVATE FUNCTIONA**********************/
 void handle_null_pointer(void *p)
 {
 	if (!p) {
@@ -12,6 +10,7 @@ void handle_null_pointer(void *p)
 	}
 }
 
+/*************************EXPORTED FUNCTIONS****/
 /* O pot face sa fie mai generala (sa mearga si pentru u, si pt d si pt lf) */
 unsigned int **allocate_matrix(int n, int m)
 {
@@ -84,5 +83,3 @@ void deallocate_double_matrix(double **ptr, int n)
 		free(ptr[i]);
 	free(ptr);
 }
-
-#endif

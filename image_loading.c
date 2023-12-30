@@ -3,10 +3,9 @@
 
 #include <ctype.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include "img_struct.h"
-#include "mem_ops.c"
+#include "mem_ops.h"
 #include "err_handling.c"
 #include "image_info.c"
 
