@@ -2,8 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "img_ops.c"
-#include "image_loading.c"
 
 /******************************PRIVATE FUNCTIONS******************************/
 
