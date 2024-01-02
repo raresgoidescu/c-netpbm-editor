@@ -1,12 +1,11 @@
-#ifndef err_handling
-#define err_handling
+// Copyright Rares-Stefan Goidescu 312CAb 2023-2024
 
 #include <stdio.h>
 #include <stdlib.h>
 
-void perr(char *err_message) {
+/* Printeaza un mesaj de eroare cu exit status -1 */
+void perr(char *err_message)
+{
 	fprintf(stdout, "%s", err_message);
 	exit(-1);
 }
-
-#endif

@@ -1,4 +1,3 @@
-z.out
 /checker
 /check_utils
 /cs
@@ -9,6 +8,7 @@ z.out
 /tasks
 /tests
 /target
+/images
 Cargo.lock
 Cargo.toml
 check
@@ -17,7 +17,6 @@ install.sh
 tests.json
 image_check
 image_editor
-dummy
 .check.grade
 .checkpatch-camelcase.git.
 log.txt
