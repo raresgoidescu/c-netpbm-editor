@@ -12,4 +12,4 @@ void apply(img_data *data, char *param, int from_x, int from_y,
 void rotate(img_data *data, int *from_x, int *from_y, int *to_x, int *to_y,
 			int angle);
 
-#endif
+#endif /* img_ops */

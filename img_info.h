@@ -4,4 +4,4 @@
 int is_colored(const char *path, char *mword);
 int is_binary(const char *path, char *mword);
 
-#endif
+#endif /* image_info */

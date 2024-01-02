@@ -3,4 +3,4 @@
 
 void perr(char *err_message);
 
-#endif
+#endif /* err_handling */

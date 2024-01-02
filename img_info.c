@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
+/* Functie care returneaza 1 in caz ca imaginea e color */
 int is_colored(const char *path, char *mword)
 {
 	FILE *f = fopen(path, "r");
@@ -14,6 +15,7 @@ int is_colored(const char *path, char *mword)
 	return 0;
 }
 
+/* Functie care returneaza 1 in caz ca imaginea este in format raw*/
 int is_binary(const char *path, char *mword)
 {
 	FILE *f = fopen(path, "r");

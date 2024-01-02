@@ -1,7 +1,8 @@
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-/*************************PRIVATE FUNCTIONA**********************/
+/******************************PRIVATE FUNCTIONS******************************/
+
 void handle_null_pointer(void *p)
 {
 	if (!p) {
@@ -10,8 +11,14 @@ void handle_null_pointer(void *p)
 	}
 }
 
-/*************************EXPORTED FUNCTIONS****/
-/* O pot face sa fie mai generala (sa mearga si pentru u, si pt d si pt lf) */
+/******************************EXPORTED FUNCTIONS*****************************/
+
+/*
+	Aceste functii aloca si elibereaza memorie dinamic.
+	Nu sunt sigur daca pot face o functie care sa poata aloca o matrice
+	cu elemente de orice tip (int/double/unsigned)
+*/
+
 unsigned int **allocate_matrix(int n, int m)
 {
 	unsigned int **ptr = NULL;

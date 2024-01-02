@@ -1,3 +1,5 @@
 ### Copyright Rares-Stefan Goidescu 312CAb 2023-2024
 
 # Tema 3 - 
+
+Folosesc doar o variabila de tip unsigned int intrucat valoarea maxima a unui canal de culoare/gri este 255 255 = 11111111 (8 biti), iar variabila unsigned int are dimensiunea de 32 de biti, astfel putem pastra atat maxval (alpha), cat si valorile canalelor de culoare. Voi folosi o metoda cunoscuta in image processing: packing si o voi implementa prin operatii pe biti. Metoda de packing difera de la sistem la sistem, in functie de tipul de locatia celui mai semnificativ bit. Programul este facut special pentru little endian (insa se poate adapta pentru a suporta ambele tipuri de sistem).

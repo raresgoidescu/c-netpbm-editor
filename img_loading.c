@@ -1,10 +1,10 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
-#include "img_struct.h"
 #include "mem_ops.h"
-#include "err_handling.h"
 #include "img_info.h"
+#include "img_struct.h"
+#include "err_handling.h"
 
 // Binary | ASCII | extension
 // -------+-------+----------
@@ -12,9 +12,14 @@
 //	   P5 |	   P2 |		 .pgm
 //	   P6 |	   P3 |		 .ppm
 
+/******************************PRIVATE FUNCTIONS******************************/
+
 void nonppm_load(FILE *f_ptr, int binary, img_data *data)
 {
 	data->pixel_map = allocate_matrix(data->height, data->width);
+
+	// In caz ca imaginea este in format raw, o citim caracter cu caracter,
+	// iar in caz ca este plain text o citim numar cu numar
 
 	if (binary)
 		for (int i = 0; i < data->height; ++i) {
@@ -33,6 +38,12 @@ void nonppm_load(FILE *f_ptr, int binary, img_data *data)
 void ppm_load(FILE *f_ptr, int binary, img_data *data)
 {
 	data->pixel_map = allocate_matrix(data->height, data->width);
+
+	// In caz ca imaginea este in format raw, o citim caracter cu caracter,
+	// iar in caz ca este plain text o citim numar cu numar
+
+	// In cazul imaginilor color am folosit o tehnica cunoscuta
+	// in image processing, packing
 
 	if (binary)
 		for (int i = 0; i < data->height; ++i) {
@@ -55,6 +66,8 @@ void ppm_load(FILE *f_ptr, int binary, img_data *data)
 		}
 }
 
+/******************************EXPORTED FUNCTIONS*****************************/
+
 void load_image(const char *path, char *mword, img_data *data,
 				int *colored, int *binary)
 {
@@ -62,7 +75,8 @@ void load_image(const char *path, char *mword, img_data *data,
 
 	if (data->height != 0 || data->width != 0)
 		deallocate_matrix(data->pixel_map, data->height);
-
+	// Aflam daca imaginea este in format raw/plain color/grayscale
+	// pentru a sti cum sa deschidem fisierul
 	*binary = is_binary(path, mword);
 	*colored = is_colored(path, mword);
 
@@ -84,8 +98,7 @@ void load_image(const char *path, char *mword, img_data *data,
 		return;
 	}
 
-	// Trecem peste comentarii
-	// Trebuie pus dupa fiecare linie din header
+	// Trecem peste comentarii (Pot fi si intre dimensiuni & maxval?)
 	spare_char = fgetc(f);
 	while (spare_char == '#') {
 		spare_char = fgetc(f);
@@ -121,12 +134,6 @@ void load_image(const char *path, char *mword, img_data *data,
 			return;
 		}
 
-	// Binary | ASCII | extension
-	// -------+-------+----------
-	//	   P4 |	   P1 |		 .pbm
-	//	   P5 |	   P2 |		 .pgm
-	//	   P6 |	   P3 |		 .ppm
-
 	if (*colored)
 		ppm_load(f, *binary, data);
 	else
@@ -154,6 +161,9 @@ void save(img_data data, char *mword, char *path, int ascii, int colored)
 	//	   P5 |	   P2 |		 .pgm
 	//	   P6 |	   P3 |		 .ppm
 
+	// Operatia inversa a incarcarii, salvarea, se bazeaza pe aceeasi idee,
+	// doar ca schimbam magic-word-ul in caz ca se doreste salvarea imaginii
+	// sub alt format fata de cel initial
 	if (colored) {
 		if (ascii && !strcmp(mword, "P6"))
 			mword[1] = '3';

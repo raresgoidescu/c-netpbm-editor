@@ -6,79 +6,79 @@
 
 +++++ running task image_editor (90p) ...
 
-+++++ running test 00-image_editorrunning test       ... - OK stage time: 0:00:00.215117 running check      ... - OK stage time: 0:00:00.059573  ----- running test 00-image_editor - grade 1/1 
-+++++ running test 01-image_editorrunning test       ... - OK stage time: 0:00:00.201677 running check      ... - OK stage time: 0:00:00.032810  ----- running test 01-image_editor - grade 1/1 
-+++++ running test 02-image_editorrunning test       ... - OK stage time: 0:00:00.045763 running check      ... - OK stage time: 0:00:00.064525  ----- running test 02-image_editor - grade 1/1 
-+++++ running test 03-image_editorrunning test       ... - OK stage time: 0:00:00.020837 running check      ... - OK stage time: 0:00:00.033741  ----- running test 03-image_editor - grade 1/1 
-+++++ running test 04-image_editorrunning test       ... - OK stage time: 0:00:00.393818 running check      ... - OK stage time: 0:00:00.143879  ----- running test 04-image_editor - grade 1/1 
-+++++ running test 05-image_editorrunning test       ... - OK stage time: 0:00:00.224743 running check      ... - OK stage time: 0:00:00.035557  ----- running test 05-image_editor - grade 1/1 
-+++++ running test 06-image_editorrunning test       ... - OK stage time: 0:00:00.281741 running check      ... - OK stage time: 0:00:00.147506  ----- running test 06-image_editor - grade 1/1 
-+++++ running test 07-image_editorrunning test       ... - OK stage time: 0:00:00.126982 running check      ... - OK stage time: 0:00:00.035275  ----- running test 07-image_editor - grade 1/1 
-+++++ running test 08-image_editorrunning test       ... - OK stage time: 0:00:00.387695 running check      ... - OK stage time: 0:00:00.147211  ----- running test 08-image_editor - grade 1/1 
-+++++ running test 09-image_editorrunning test       ... - OK stage time: 0:00:00.225601 running check      ... - OK stage time: 0:00:00.035588  ----- running test 09-image_editor - grade 1/1 
-+++++ running test 10-image_editorrunning test       ... - OK stage time: 0:00:00.265377 running check      ... - OK stage time: 0:00:00.123586  ----- running test 10-image_editor - grade 1/1 
-+++++ running test 11-image_editorrunning test       ... - OK stage time: 0:00:00.104888 running check      ... - OK stage time: 0:00:00.030193  ----- running test 11-image_editor - grade 1/1 
-+++++ running test 12-image_editorrunning test       ... - OK stage time: 0:00:00.068220 running check      ... - OK stage time: 0:00:00.029961  ----- running test 12-image_editor - grade 1/1 
-+++++ running test 13-image_editorrunning test       ... - OK stage time: 0:00:00.017504 running check      ... - OK stage time: 0:00:00.027577  ----- running test 13-image_editor - grade 1/1 
-+++++ running test 14-image_editorrunning test       ... - OK stage time: 0:00:00.054187 running check      ... - OK stage time: 0:00:00.026964  ----- running test 14-image_editor - grade 1/1 
-+++++ running test 15-image_editorrunning test       ... - OK stage time: 0:00:00.010087 running check      ... - OK stage time: 0:00:00.026839  ----- running test 15-image_editor - grade 1/1 
-+++++ running test 16-image_editorrunning test       ... - OK stage time: 0:00:00.054459 running check      ... - OK stage time: 0:00:00.027063  ----- running test 16-image_editor - grade 1/1 
-+++++ running test 17-image_editorrunning test       ... - OK stage time: 0:00:00.061490 running check      ... - OK stage time: 0:00:00.026758  ----- running test 17-image_editor - grade 1/1 
-+++++ running test 18-image_editorrunning test       ... - OK stage time: 0:00:00.017672 running check      ... - OK stage time: 0:00:00.027198  ----- running test 18-image_editor - grade 1/1 
-+++++ running test 19-image_editorrunning test       ... - OK stage time: 0:00:00.270001 running check      ... - OK stage time: 0:00:00.244322  ----- running test 19-image_editor - grade 4/4 
-+++++ running test 20-image_editorrunning test       ... - OK stage time: 0:00:00.745262 running check      ... - OK stage time: 0:00:00.212726  ----- running test 20-image_editor - grade 6/6 
-+++++ running test 21-image_editorrunning test       ... - OK stage time: 0:00:01.406168 running check      ... - OK stage time: 0:00:00.798408  ----- running test 21-image_editor - grade 6/6 
-+++++ running test 22-image_editorrunning test       ... - OK stage time: 0:00:01.816968 running check      ... - OK stage time: 0:00:00.124607  ----- running test 22-image_editor - grade 7.5/7.5 
-+++++ running test 23-image_editorrunning test       ... - OK stage time: 0:00:00.486273 running check      ... - OK stage time: 0:00:00.303814  ----- running test 23-image_editor - grade 7.5/7.5 
-+++++ running test 24-image_editorrunning test       ... - OK stage time: 0:00:01.507543 running check      ... - OK stage time: 0:00:00.940062  ----- running test 24-image_editor - grade 7.5/7.5 
-+++++ running test 25-image_editorrunning test       ... - OK stage time: 0:00:00.041327 running check      ... - OK stage time: 0:00:00.032067  ----- running test 25-image_editor - grade 7.5/7.5 
-+++++ running test 26-image_editorrunning test       ... - OK stage time: 0:00:00.006113 running check      ... - OK stage time: 0:00:00.034745  ----- running test 26-image_editor - grade 1/1 
-+++++ running test 27-image_editorrunning test       ... - OK stage time: 0:00:00.174129 running check      ... - OK stage time: 0:00:00.038776  ----- running test 27-image_editor - grade 1/1 
-+++++ running test 28-image_editorrunning test       ... - OK stage time: 0:00:00.025494 running check      ... - OK stage time: 0:00:00.036399  ----- running test 28-image_editor - grade 1/1 
-+++++ running test 29-image_editorrunning test       ... - OK stage time: 0:00:00.036194 running check      ... - OK stage time: 0:00:00.035423  ----- running test 29-image_editor - grade 1/1 
-+++++ running test 30-image_editorrunning test       ... - OK stage time: 0:00:00.045692 running check      ... - OK stage time: 0:00:00.035405  ----- running test 30-image_editor - grade 1/1 
-+++++ running test 31-image_editorrunning test       ... - OK stage time: 0:00:00.099707 running check      ... - OK stage time: 0:00:00.032653  ----- running test 31-image_editor - grade 2/2 
-+++++ running test 32-image_editorrunning test       ... - OK stage time: 0:00:00.820954 running check      ... - OK stage time: 0:00:00.194138  ----- running test 32-image_editor - grade 3/3 
-+++++ running test 33-image_editorrunning test       ... - OK stage time: 0:00:00.464063 running check      ... - OK stage time: 0:00:00.211949  ----- running test 33-image_editor - grade 0.416666/0.416666 
-+++++ running test 34-image_editorrunning test       ... - OK stage time: 0:00:00.209240 running check      ... - OK stage time: 0:00:00.037911  ----- running test 34-image_editor - grade 0.416666/0.416666 
-+++++ running test 35-image_editorrunning test       ... - OK stage time: 0:00:00.308080 running check      ... - OK stage time: 0:00:00.250008  ----- running test 35-image_editor - grade 0.416666/0.416666 
-+++++ running test 36-image_editorrunning test       ... - OK stage time: 0:00:00.053438 running check      ... - OK stage time: 0:00:00.038744  ----- running test 36-image_editor - grade 0.416666/0.416666 
-+++++ running test 37-image_editorrunning test       ... - OK stage time: 0:00:00.475712 running check      ... - OK stage time: 0:00:00.234746  ----- running test 37-image_editor - grade 0.416666/0.416666 
-+++++ running test 38-image_editorrunning test       ... - OK stage time: 0:00:00.220795 running check      ... - OK stage time: 0:00:00.039514  ----- running test 38-image_editor - grade 0.416666/0.416666 
-+++++ running test 39-image_editorrunning test       ... - OK stage time: 0:00:00.300102 running check      ... - OK stage time: 0:00:00.246501  ----- running test 39-image_editor - grade 0.416666/0.416666 
-+++++ running test 40-image_editorrunning test       ... - OK stage time: 0:00:00.047268 running check      ... - OK stage time: 0:00:00.038335  ----- running test 40-image_editor - grade 0.416666/0.416666 
-+++++ running test 41-image_editorrunning test       ... - OK stage time: 0:00:00.465310 running check      ... - OK stage time: 0:00:00.231811  ----- running test 41-image_editor - grade 0.416666/0.416666 
-+++++ running test 42-image_editorrunning test       ... - OK stage time: 0:00:00.213223 running check      ... - OK stage time: 0:00:00.037156  ----- running test 42-image_editor - grade 0.416666/0.416666 
-+++++ running test 43-image_editorrunning test       ... - OK stage time: 0:00:00.307688 running check      ... - OK stage time: 0:00:00.211453  ----- running test 43-image_editor - grade 0.416666/0.416666 
-+++++ running test 44-image_editorrunning test       ... - OK stage time: 0:00:00.054683 running check      ... - OK stage time: 0:00:00.037742  ----- running test 44-image_editor - grade 0.416666/0.416666 
-+++++ running test 45-image_editorrunning test       ... - OK stage time: 0:00:00.446826 running check      ... - OK stage time: 0:00:00.241491  ----- running test 45-image_editor - grade 0.416666/0.416666 
-+++++ running test 46-image_editorrunning test       ... - OK stage time: 0:00:00.212670 running check      ... - OK stage time: 0:00:00.039572  ----- running test 46-image_editor - grade 0.416666/0.416666 
-+++++ running test 47-image_editorrunning test       ... - OK stage time: 0:00:00.313997 running check      ... - OK stage time: 0:00:00.209251  ----- running test 47-image_editor - grade 0.416666/0.416666 
-+++++ running test 48-image_editorrunning test       ... - OK stage time: 0:00:00.043407 running check      ... - OK stage time: 0:00:00.037267  ----- running test 48-image_editor - grade 0.416666/0.416666 
-+++++ running test 49-image_editorrunning test       ... - OK stage time: 0:00:00.443443 running check      ... - OK stage time: 0:00:00.191081  ----- running test 49-image_editor - grade 0.416666/0.416666 
-+++++ running test 50-image_editorrunning test       ... - OK stage time: 0:00:00.204290 running check      ... - OK stage time: 0:00:00.037754  ----- running test 50-image_editor - grade 0.416666/0.416666 
-+++++ running test 51-image_editorrunning test       ... - OK stage time: 0:00:00.298789 running check      ... - OK stage time: 0:00:00.191567  ----- running test 51-image_editor - grade 0.416666/0.416666 
-+++++ running test 52-image_editorrunning test       ... - OK stage time: 0:00:00.044279 running check      ... - OK stage time: 0:00:00.037606  ----- running test 52-image_editor - grade 0.416666/0.416666 
-+++++ running test 53-image_editorrunning test       ... - OK stage time: 0:00:00.480870 running check      ... - OK stage time: 0:00:00.226231  ----- running test 53-image_editor - grade 0.416666/0.416666 
-+++++ running test 54-image_editorrunning test       ... - OK stage time: 0:00:00.207880 running check      ... - OK stage time: 0:00:00.037476  ----- running test 54-image_editor - grade 0.416666/0.416666 
-+++++ running test 55-image_editorrunning test       ... - OK stage time: 0:00:00.306657 running check      ... - OK stage time: 0:00:00.191519  ----- running test 55-image_editor - grade 0.416666/0.416666 
-+++++ running test 56-image_editorrunning test       ... - OK stage time: 0:00:00.053140 running check      ... - OK stage time: 0:00:00.037889  ----- running test 56-image_editor - grade 0.416666/0.416666 
-+++++ running test 57-image_editorrunning test       ... - OK stage time: 0:00:00.458804 running check      ... - OK stage time: 0:00:00.239691  ----- running test 57-image_editor - grade 0.416666/0.416666 
-+++++ running test 58-image_editorrunning test       ... - OK stage time: 0:00:00.207634 running check      ... - OK stage time: 0:00:00.037909  ----- running test 58-image_editor - grade 0.416666/0.416666 
-+++++ running test 59-image_editorrunning test       ... - OK stage time: 0:00:00.305176 running check      ... - OK stage time: 0:00:00.210893  ----- running test 59-image_editor - grade 0.416666/0.416666 
-+++++ running test 60-image_editorrunning test       ... - OK stage time: 0:00:00.048272 running check      ... - OK stage time: 0:00:00.037562  ----- running test 60-image_editor - grade 0.416666/0.416666 
-+++++ running test 61-image_editorrunning test       ... - OK stage time: 0:00:00.478969 running check      ... - OK stage time: 0:00:00.196988  ----- running test 61-image_editor - grade 0.416666/0.416666 
-+++++ running test 62-image_editorrunning test       ... - OK stage time: 0:00:00.206267 running check      ... - OK stage time: 0:00:00.038476  ----- running test 62-image_editor - grade 0.416666/0.416666 
-+++++ running test 63-image_editorrunning test       ... - OK stage time: 0:00:00.307542 running check      ... - OK stage time: 0:00:00.193074  ----- running test 63-image_editor - grade 0.416666/0.416666 
-+++++ running test 64-image_editorrunning test       ... - OK stage time: 0:00:00.071445 running check      ... - OK stage time: 0:00:00.037656  ----- running test 64-image_editor - grade 0.416666/0.416666 
-+++++ running test 65-image_editorrunning test       ... - OK stage time: 0:00:00.447175 running check      ... - OK stage time: 0:00:00.188810  ----- running test 65-image_editor - grade 0.416666/0.416666 
-+++++ running test 66-image_editorrunning test       ... - OK stage time: 0:00:00.197425 running check      ... - OK stage time: 0:00:00.037145  ----- running test 66-image_editor - grade 0.416666/0.416666 
-+++++ running test 67-image_editorrunning test       ... - OK stage time: 0:00:00.289682 running check      ... - OK stage time: 0:00:00.208062  ----- running test 67-image_editor - grade 0.416666/0.416666 
-+++++ running test 68-image_editorrunning test       ... - OK stage time: 0:00:00.043561 running check      ... - OK stage time: 0:00:00.037273  ----- running test 68-image_editor - grade 0.416666/0.416666 ----- running task image_editor - grade 90/90 ----- running all tasks
-+++++ running check_style (10p)..../img_ops.c:338: WARNING:LONG_FUNCTION: 'apply' function definition is 95 lines, perhaps refactor
------ running check_style - grade 0/10
++++++ running test 00-image_editorrunning test       ... - OK stage time: 0:00:00.235917 running check      ... - OK stage time: 0:00:00.060748  ----- running test 00-image_editor - grade 1/1 
++++++ running test 01-image_editorrunning test       ... - OK stage time: 0:00:00.178910 running check      ... - OK stage time: 0:00:00.033098  ----- running test 01-image_editor - grade 1/1 
++++++ running test 02-image_editorrunning test       ... - OK stage time: 0:00:00.046669 running check      ... - OK stage time: 0:00:00.060332  ----- running test 02-image_editor - grade 1/1 
++++++ running test 03-image_editorrunning test       ... - OK stage time: 0:00:00.020675 running check      ... - OK stage time: 0:00:00.033046  ----- running test 03-image_editor - grade 1/1 
++++++ running test 04-image_editorrunning test       ... - OK stage time: 0:00:00.391374 running check      ... - OK stage time: 0:00:00.149870  ----- running test 04-image_editor - grade 1/1 
++++++ running test 05-image_editorrunning test       ... - OK stage time: 0:00:00.225248 running check      ... - OK stage time: 0:00:00.035852  ----- running test 05-image_editor - grade 1/1 
++++++ running test 06-image_editorrunning test       ... - OK stage time: 0:00:00.279408 running check      ... - OK stage time: 0:00:00.143684  ----- running test 06-image_editor - grade 1/1 
++++++ running test 07-image_editorrunning test       ... - OK stage time: 0:00:00.123357 running check      ... - OK stage time: 0:00:00.036159  ----- running test 07-image_editor - grade 1/1 
++++++ running test 08-image_editorrunning test       ... - OK stage time: 0:00:00.389646 running check      ... - OK stage time: 0:00:00.146673  ----- running test 08-image_editor - grade 1/1 
++++++ running test 09-image_editorrunning test       ... - OK stage time: 0:00:00.226045 running check      ... - OK stage time: 0:00:00.040345  ----- running test 09-image_editor - grade 1/1 
++++++ running test 10-image_editorrunning test       ... - OK stage time: 0:00:00.284507 running check      ... - OK stage time: 0:00:00.146064  ----- running test 10-image_editor - grade 1/1 
++++++ running test 11-image_editorrunning test       ... - OK stage time: 0:00:00.120357 running check      ... - OK stage time: 0:00:00.036142  ----- running test 11-image_editor - grade 1/1 
++++++ running test 12-image_editorrunning test       ... - OK stage time: 0:00:00.079610 running check      ... - OK stage time: 0:00:00.035432  ----- running test 12-image_editor - grade 1/1 
++++++ running test 13-image_editorrunning test       ... - OK stage time: 0:00:00.021091 running check      ... - OK stage time: 0:00:00.032687  ----- running test 13-image_editor - grade 1/1 
++++++ running test 14-image_editorrunning test       ... - OK stage time: 0:00:00.063528 running check      ... - OK stage time: 0:00:00.031699  ----- running test 14-image_editor - grade 1/1 
++++++ running test 15-image_editorrunning test       ... - OK stage time: 0:00:00.011860 running check      ... - OK stage time: 0:00:00.030920  ----- running test 15-image_editor - grade 1/1 
++++++ running test 16-image_editorrunning test       ... - OK stage time: 0:00:00.061487 running check      ... - OK stage time: 0:00:00.031542  ----- running test 16-image_editor - grade 1/1 
++++++ running test 17-image_editorrunning test       ... - OK stage time: 0:00:00.069961 running check      ... - OK stage time: 0:00:00.031765  ----- running test 17-image_editor - grade 1/1 
++++++ running test 18-image_editorrunning test       ... - OK stage time: 0:00:00.020011 running check      ... - OK stage time: 0:00:00.032286  ----- running test 18-image_editor - grade 1/1 
++++++ running test 19-image_editorrunning test       ... - OK stage time: 0:00:00.315305 running check      ... - OK stage time: 0:00:00.286603  ----- running test 19-image_editor - grade 4/4 
++++++ running test 20-image_editorrunning test       ... - OK stage time: 0:00:00.856510 running check      ... - OK stage time: 0:00:00.254067  ----- running test 20-image_editor - grade 6/6 
++++++ running test 21-image_editorrunning test       ... - OK stage time: 0:00:01.702601 running check      ... - OK stage time: 0:00:00.926057  ----- running test 21-image_editor - grade 6/6 
++++++ running test 22-image_editorrunning test       ... - OK stage time: 0:00:02.117282 running check      ... - OK stage time: 0:00:00.148333  ----- running test 22-image_editor - grade 7.5/7.5 
++++++ running test 23-image_editorrunning test       ... - OK stage time: 0:00:00.491379 running check      ... - OK stage time: 0:00:00.287794  ----- running test 23-image_editor - grade 7.5/7.5 
++++++ running test 24-image_editorrunning test       ... - OK stage time: 0:00:01.512987 running check      ... - OK stage time: 0:00:00.941229  ----- running test 24-image_editor - grade 7.5/7.5 
++++++ running test 25-image_editorrunning test       ... - OK stage time: 0:00:00.041576 running check      ... - OK stage time: 0:00:00.032945  ----- running test 25-image_editor - grade 7.5/7.5 
++++++ running test 26-image_editorrunning test       ... - OK stage time: 0:00:00.005866 running check      ... - OK stage time: 0:00:00.031889  ----- running test 26-image_editor - grade 1/1 
++++++ running test 27-image_editorrunning test       ... - OK stage time: 0:00:00.186224 running check      ... - OK stage time: 0:00:00.039317  ----- running test 27-image_editor - grade 1/1 
++++++ running test 28-image_editorrunning test       ... - OK stage time: 0:00:00.026184 running check      ... - OK stage time: 0:00:00.035859  ----- running test 28-image_editor - grade 1/1 
++++++ running test 29-image_editorrunning test       ... - OK stage time: 0:00:00.035599 running check      ... - OK stage time: 0:00:00.036273  ----- running test 29-image_editor - grade 1/1 
++++++ running test 30-image_editorrunning test       ... - OK stage time: 0:00:00.052516 running check      ... - OK stage time: 0:00:00.042006  ----- running test 30-image_editor - grade 1/1 
++++++ running test 31-image_editorrunning test       ... - OK stage time: 0:00:00.098017 running check      ... - OK stage time: 0:00:00.032734  ----- running test 31-image_editor - grade 2/2 
++++++ running test 32-image_editorrunning test       ... - OK stage time: 0:00:00.826374 running check      ... - OK stage time: 0:00:00.248565  ----- running test 32-image_editor - grade 3/3 
++++++ running test 33-image_editorrunning test       ... - OK stage time: 0:00:00.500556 running check      ... - OK stage time: 0:00:00.211390  ----- running test 33-image_editor - grade 0.416666/0.416666 
++++++ running test 34-image_editorrunning test       ... - OK stage time: 0:00:00.214306 running check      ... - OK stage time: 0:00:00.038422  ----- running test 34-image_editor - grade 0.416666/0.416666 
++++++ running test 35-image_editorrunning test       ... - OK stage time: 0:00:00.301582 running check      ... - OK stage time: 0:00:00.227721  ----- running test 35-image_editor - grade 0.416666/0.416666 
++++++ running test 36-image_editorrunning test       ... - OK stage time: 0:00:00.054743 running check      ... - OK stage time: 0:00:00.038875  ----- running test 36-image_editor - grade 0.416666/0.416666 
++++++ running test 37-image_editorrunning test       ... - OK stage time: 0:00:00.457121 running check      ... - OK stage time: 0:00:00.236145  ----- running test 37-image_editor - grade 0.416666/0.416666 
++++++ running test 38-image_editorrunning test       ... - OK stage time: 0:00:00.202031 running check      ... - OK stage time: 0:00:00.039156  ----- running test 38-image_editor - grade 0.416666/0.416666 
++++++ running test 39-image_editorrunning test       ... - OK stage time: 0:00:00.302676 running check      ... - OK stage time: 0:00:00.263960  ----- running test 39-image_editor - grade 0.416666/0.416666 
++++++ running test 40-image_editorrunning test       ... - OK stage time: 0:00:00.064341 running check      ... - OK stage time: 0:00:00.038943  ----- running test 40-image_editor - grade 0.416666/0.416666 
++++++ running test 41-image_editorrunning test       ... - OK stage time: 0:00:00.475012 running check      ... - OK stage time: 0:00:00.243498  ----- running test 41-image_editor - grade 0.416666/0.416666 
++++++ running test 42-image_editorrunning test       ... - OK stage time: 0:00:00.207504 running check      ... - OK stage time: 0:00:00.038053  ----- running test 42-image_editor - grade 0.416666/0.416666 
++++++ running test 43-image_editorrunning test       ... - OK stage time: 0:00:00.305968 running check      ... - OK stage time: 0:00:00.190145  ----- running test 43-image_editor - grade 0.416666/0.416666 
++++++ running test 44-image_editorrunning test       ... - OK stage time: 0:00:00.052285 running check      ... - OK stage time: 0:00:00.038264  ----- running test 44-image_editor - grade 0.416666/0.416666 
++++++ running test 45-image_editorrunning test       ... - OK stage time: 0:00:00.443172 running check      ... - OK stage time: 0:00:00.188373  ----- running test 45-image_editor - grade 0.416666/0.416666 
++++++ running test 46-image_editorrunning test       ... - OK stage time: 0:00:00.200380 running check      ... - OK stage time: 0:00:00.037974  ----- running test 46-image_editor - grade 0.416666/0.416666 
++++++ running test 47-image_editorrunning test       ... - OK stage time: 0:00:00.325226 running check      ... - OK stage time: 0:00:00.190268  ----- running test 47-image_editor - grade 0.416666/0.416666 
++++++ running test 48-image_editorrunning test       ... - OK stage time: 0:00:00.044199 running check      ... - OK stage time: 0:00:00.037782  ----- running test 48-image_editor - grade 0.416666/0.416666 
++++++ running test 49-image_editorrunning test       ... - OK stage time: 0:00:00.460507 running check      ... - OK stage time: 0:00:00.190615  ----- running test 49-image_editor - grade 0.416666/0.416666 
++++++ running test 50-image_editorrunning test       ... - OK stage time: 0:00:00.202381 running check      ... - OK stage time: 0:00:00.036717  ----- running test 50-image_editor - grade 0.416666/0.416666 
++++++ running test 51-image_editorrunning test       ... - OK stage time: 0:00:00.294632 running check      ... - OK stage time: 0:00:00.189389  ----- running test 51-image_editor - grade 0.416666/0.416666 
++++++ running test 52-image_editorrunning test       ... - OK stage time: 0:00:00.044018 running check      ... - OK stage time: 0:00:00.038386  ----- running test 52-image_editor - grade 0.416666/0.416666 
++++++ running test 53-image_editorrunning test       ... - OK stage time: 0:00:00.458160 running check      ... - OK stage time: 0:00:00.225439  ----- running test 53-image_editor - grade 0.416666/0.416666 
++++++ running test 54-image_editorrunning test       ... - OK stage time: 0:00:00.208037 running check      ... - OK stage time: 0:00:00.037392  ----- running test 54-image_editor - grade 0.416666/0.416666 
++++++ running test 55-image_editorrunning test       ... - OK stage time: 0:00:00.302892 running check      ... - OK stage time: 0:00:00.190618  ----- running test 55-image_editor - grade 0.416666/0.416666 
++++++ running test 56-image_editorrunning test       ... - OK stage time: 0:00:00.053867 running check      ... - OK stage time: 0:00:00.038397  ----- running test 56-image_editor - grade 0.416666/0.416666 
++++++ running test 57-image_editorrunning test       ... - OK stage time: 0:00:00.511232 running check      ... - OK stage time: 0:00:00.211519  ----- running test 57-image_editor - grade 0.416666/0.416666 
++++++ running test 58-image_editorrunning test       ... - OK stage time: 0:00:00.201354 running check      ... - OK stage time: 0:00:00.040862  ----- running test 58-image_editor - grade 0.416666/0.416666 
++++++ running test 59-image_editorrunning test       ... - OK stage time: 0:00:00.292939 running check      ... - OK stage time: 0:00:00.225202  ----- running test 59-image_editor - grade 0.416666/0.416666 
++++++ running test 60-image_editorrunning test       ... - OK stage time: 0:00:00.047090 running check      ... - OK stage time: 0:00:00.037759  ----- running test 60-image_editor - grade 0.416666/0.416666 
++++++ running test 61-image_editorrunning test       ... - OK stage time: 0:00:00.485289 running check      ... - OK stage time: 0:00:00.209201  ----- running test 61-image_editor - grade 0.416666/0.416666 
++++++ running test 62-image_editorrunning test       ... - OK stage time: 0:00:00.206914 running check      ... - OK stage time: 0:00:00.037120  ----- running test 62-image_editor - grade 0.416666/0.416666 
++++++ running test 63-image_editorrunning test       ... - OK stage time: 0:00:00.299330 running check      ... - OK stage time: 0:00:00.239431  ----- running test 63-image_editor - grade 0.416666/0.416666 
++++++ running test 64-image_editorrunning test       ... - OK stage time: 0:00:00.052731 running check      ... - OK stage time: 0:00:00.038324  ----- running test 64-image_editor - grade 0.416666/0.416666 
++++++ running test 65-image_editorrunning test       ... - OK stage time: 0:00:00.451129 running check      ... - OK stage time: 0:00:00.243887  ----- running test 65-image_editor - grade 0.416666/0.416666 
++++++ running test 66-image_editorrunning test       ... - OK stage time: 0:00:00.198775 running check      ... - OK stage time: 0:00:00.038118  ----- running test 66-image_editor - grade 0.416666/0.416666 
++++++ running test 67-image_editorrunning test       ... - OK stage time: 0:00:00.289471 running check      ... - OK stage time: 0:00:00.188398  ----- running test 67-image_editor - grade 0.416666/0.416666 
++++++ running test 68-image_editorrunning test       ... - OK stage time: 0:00:00.043170 running check      ... - OK stage time: 0:00:00.038090  ----- running test 68-image_editor - grade 0.416666/0.416666 ----- running task image_editor - grade 90/90 ----- running all tasks
++++++ running check_style (10p)...
+----- running check_style - grade 10/10
 +++++ make_clean ...----- make_clean
-		\Checker grade: 90
-Total: 90/100
+		\Checker grade: 100
+Total: 100/100
 
-Total execution time: 0:00:32.768526
+Total execution time: 0:00:34.025710
