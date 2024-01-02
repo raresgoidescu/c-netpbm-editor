@@ -1,3 +1,5 @@
+// Copyright Rares-Stefan Goidescu 312CAb 2023-2024
+
 #ifndef img_ops
 #define img_ops
 

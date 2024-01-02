@@ -1,4 +1,5 @@
 // Copyright Rares-Stefan Goidescu 312CAb 2023-2024
+
 #include <stdio.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -21,7 +22,7 @@ void select_all(int coords[], img_data data)
 	coords[3] = data.height;
 }
 
-/* 
+/*
 	Functie care verifica corectitudinea setului de coordonate introdus
 	In caz ca sunt invalide, se intoarce la selectia anterioara
 */

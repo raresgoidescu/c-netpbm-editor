@@ -1,3 +1,5 @@
+// Copyright Rares-Stefan Goidescu 312CAb 2023-2024
+
 #include <stdio.h>
 
 /* Interschimba doua variabile de tip int */

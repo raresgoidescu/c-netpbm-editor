@@ -1,3 +1,5 @@
+// Copyright Rares-Stefan Goidescu 312CAb 2023-2024
+
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>

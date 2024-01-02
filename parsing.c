@@ -1,3 +1,5 @@
+// Copyright Rares-Stefan Goidescu 312CAb 2023-2024
+
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -5,6 +7,7 @@
 
 /******************************PRIVATE FUNCTIONS******************************/
 
+/* Functie care testeaza path-ul introdus la tastatura */
 int file_exists(char *path)
 {
 	if (path[strlen(path) - 1] == '/') {
@@ -36,6 +39,7 @@ int file_exists(char *path)
 	return 1;
 }
 
+// Functie care proceseaza inputul comenzii de save
 int want_ascii(char *param)
 {
 	if (!param)
@@ -48,6 +52,8 @@ int want_ascii(char *param)
 	return 0;
 }
 
+// Functie care returneaza 1 daca programul a primit
+// o comanda din lista si 0 in caz contrar
 int cmd_not_found(char *cmd)
 {
 	if (strcmp(cmd, "LOAD") && strcmp(cmd, "SELECT") &&
@@ -61,12 +67,18 @@ int cmd_not_found(char *cmd)
 	return 1;
 }
 
+// Functie care se intoarce la setul valid (precedent) de coordonate
 void planb(int *coords, int *bckup)
 {
 	for (int i = 0; i < 4; i++)
 		coords[i] = bckup[i];
 }
 
+// Functie care verifica sintaxa comenzii de SELECT
+/*
+	Verifica daca exista litere in coordonate
+	si daca sunt mai putin sau mai mult de 4 coordonate
+*/
 void verify_selection_syntax(char *p, int coords[], int bckup[], int *selected,
 							 int *all, int *select_err, int *field)
 {
@@ -99,6 +111,7 @@ void verify_selection_syntax(char *p, int coords[], int bckup[], int *selected,
 	}
 }
 
+// Functie care verifica parametrii primiti in cazul unei comenzi HISTOGRAM
 void verify_histogram_syntax(char *p, int *astks, int *bins, int *field)
 {
 	char delims[] = "\n ";
@@ -124,6 +137,11 @@ void verify_histogram_syntax(char *p, int *astks, int *bins, int *field)
 
 /*****************************EXPORTED FUNCTIONS******************************/
 
+/*
+	Functie care imparte comanda din buffer in cuvinte si o proceseaza pas cu
+	pas facand si cateva verificari de sintaxa pentru a trimite mai departe un
+	rezultat cat mai corect
+*/
 void parse(char *cmd, char *buffer, char *path, char *save_path, char *param,
 		   int *ascii, int *ok_load, int *coords, int *bckup, int *all,
 		   int *selected, int *astks, int *bins, int *angle, int *select_err)
@@ -147,17 +165,17 @@ void parse(char *cmd, char *buffer, char *path, char *save_path, char *param,
 				return;
 			} else if (!strcmp(cmd, "LOAD")) {
 				strcpy(path, p);
-				int can_load = file_exists(path);
-				*ok_load = (can_load) ? 1 : 0;
+				int can_load = file_exists(path); // Verificam daca exista
+				*ok_load = (can_load) ? 1 : 0; // putem sau nu sa incarcam
 				return;
 			} else if (!strcmp(cmd, "SELECT")) {
-				*selected = 1;
+				*selected = 1; // avem o selectie (presumably)
 				if (!strcmp(p, "ALL")) {
 					*all = 1, field = 5;
 					break;
 				}
 				for (int i = 0; i < 4; i++)
-					bckup[i] = coords[i];
+					bckup[i] = coords[i]; // Pastram ultimul set de coord valid
 				verify_selection_syntax(p, coords, bckup, selected, all,
 										select_err, &field);
 				*selected = 1, *all = 0;
@@ -173,7 +191,7 @@ void parse(char *cmd, char *buffer, char *path, char *save_path, char *param,
 			} else if (!strcmp(cmd, "CROP")) {
 				return;
 			} else if (!strcmp(cmd, "APPLY")) {
-				if (!p) {
+				if (!p) { // verificam daca am primit un nume de filtru
 					param[0] = '0';
 					return;
 				}
@@ -185,7 +203,7 @@ void parse(char *cmd, char *buffer, char *path, char *save_path, char *param,
 				strcpy(save_path, p);
 				field++;
 				p = strtok(NULL, delims);
-				*ascii = want_ascii(p);
+				*ascii = want_ascii(p); // salvam ascii sau nu
 				return;
 			}
 		}
@@ -194,5 +212,5 @@ void parse(char *cmd, char *buffer, char *path, char *save_path, char *param,
 		continue;
 	}
 	if (!strcmp(cmd, "HISTOGRAM") && field == 1)
-		*astks = -1;
+		*astks = -1; // In caz ca nu am primit numarul de asteriskuri si binuri
 }
