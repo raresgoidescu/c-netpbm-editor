@@ -32,12 +32,11 @@ inapoi la valorile specifice canalelor RGB folosind shiftari la dreapta si
 operatia _"si"_ logic.
 
 Aceasta abordare aduce cateva avantaje printre care:
-
-	- Folosirea eficienta a memoriei: in cazul pozelor de dimensiuni mari,
-	stocarea separata a canalelor de culoare poate fi destul de ineficient.
-	- Procesarea mai eficienta: operatiile pe biti pe un singur numar intreg
-	tind sa fie mai rapide decat operatiile pe mai multe variabile separate.
-	- Reduce din complexitatea (nu big O) programului.
+- Folosirea eficienta a memoriei: in cazul pozelor de dimensiuni mari,
+stocarea separata a canalelor de culoare poate fi destul de ineficient.
+- Procesarea mai eficienta: operatiile pe biti pe un singur numar intreg
+tind sa fie mai rapide decat operatiile pe mai multe variabile separate.
+- Reduce din complexitatea (nu big O) programului.
 
 ## Interpretarea comenzilor de la tastatura
 
@@ -96,10 +95,9 @@ din punct de vedere al timpului de executie.
 Avand in vedere ca fiecare unghi pe care il poate accepta comanda este
 divizibil cu 90, putem simplifica acest unghi, iar de la 10 valori
 (+/-0, +/-90, +/-180 etc), ajungem la 3 valori: -1, 1, 2, unde:
-
-	- -1 => rotim imaginea cu 90 de grade la stanga (aux matrix)
-	-  1 => rotim imaginea cu 90 de grade la dreapta (aux matrix)
-	-  2 => rotim imaginea cu 180 de grade (o rasturnam) (in-place)
+- -1 => rotim imaginea cu 90 de grade la stanga (aux matrix)
+-  1 => rotim imaginea cu 90 de grade la dreapta (aux matrix)
+-  2 => rotim imaginea cu 180 de grade (o rasturnam) (in-place)
 
 Astfel, in loc sa facem 3 rotiri in cazul unui unghi de 270, vom face o singura
 rotire, la stanga, de 90 de grade, aducand un avantaj destul de mare cand
