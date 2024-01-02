@@ -1,8 +1,5 @@
-#ifndef img_ops
-#define img_ops
-
 #include "img_struct.h"
-#include "basic_ops.c"
+#include "basic_ops.h"
 #include "mem_ops.h"
 #include <math.h>
 #include <stdio.h>
@@ -393,5 +390,3 @@ void rotate(img_data *data, int *from_x, int *from_y, int *to_x, int *to_y,
 
 	printf("Rotated %d\n", angle);
 }
-
-#endif

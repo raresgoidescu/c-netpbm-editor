@@ -1,13 +1,10 @@
-#ifndef image_loading
-#define image_loading
-
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
 #include "img_struct.h"
 #include "mem_ops.h"
-#include "err_handling.c"
-#include "image_info.c"
+#include "err_handling.h"
+#include "img_info.h"
 
 // Binary | ASCII | extension
 // -------+-------+----------
@@ -211,5 +208,3 @@ void save(img_data data, char *mword, char *path, int ascii, int colored)
 
 	printf("Saved %s\n", path);
 }
-
-#endif

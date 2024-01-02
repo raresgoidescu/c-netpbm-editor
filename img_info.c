@@ -1,6 +1,3 @@
-#ifndef image_info
-#define image_info
-
 #include <stdio.h>
 #include <string.h>
 
@@ -31,5 +28,3 @@ int is_binary(const char *path, char *mword)
 
 	return 0;
 }
-
-#endif

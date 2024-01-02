@@ -2,7 +2,7 @@
 
 CC=gcc
 FLAGS=-Wall -Wextra -std=c99
-TARGETS=main.c
+TARGETS=./*.c ./*.h
 
 build: $(TARGETS)
 	$(CC) $(FLAGS) $(TARGETS) -lm -o image_editor -g

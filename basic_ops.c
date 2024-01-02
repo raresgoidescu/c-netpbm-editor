@@ -1,6 +1,3 @@
-#ifndef basic_ops
-#define basic_ops
-
 #include <stdio.h>
 
 void my_swap(int *a, int *b)
@@ -9,5 +6,3 @@ void my_swap(int *a, int *b)
 	*a = *b;
 	*b = aux;
 }
-
-#endif /* basic_ops */
