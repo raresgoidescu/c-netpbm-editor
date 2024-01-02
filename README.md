@@ -43,6 +43,7 @@ tind sa fie mai rapide decat operatiile pe mai multe variabile separate.
 Am folosit o functie de parsare (nu sunt sigur ca o pot numi asa), in care
 citeam cuvant/cifra cu cuvant/cifra pana la finalul liniei si pastram diferite
 campuri cheie, precum numele comenzii (primul cuvant), si diversii parametri.
+
 Am incercat sa fac si cateva validari in cadrul acestei functii pentru a
 trimite mai departe un rezultat cat mai corect (macar din punct de vedere
 al sintaxei).
@@ -73,9 +74,11 @@ set invalid introdus la tastatura.
 
 Aceasta comanda a fost implementata folosind un vector de frecventa pentru
 imaginile de tip grayscale.
+
 Pentru a afisa _graficul_ a trebuit sa folosesc
 formula din cerinta, care intorcea un numar trunchiat la numarul maxim de
 asterisk-uri.
+
 Pentru a afisa cu un anumit numar de bin-uri, am implementat un salt in
 structurile repetitive invers proportional cu numarul de bin-uri (ex. in cazul
 in care se vor 2 bin-uri, pasul va fi de 128 in parcurgerea unui vector
@@ -92,6 +95,7 @@ rezultat al unei sume intr-un tablou unidimensional.
 
 In implementarea acestei comenzi am incercat sa am o abordare eficiente
 din punct de vedere al timpului de executie.
+
 Avand in vedere ca fiecare unghi pe care il poate accepta comanda este
 divizibil cu 90, putem simplifica acest unghi, iar de la 10 valori
 (+/-0, +/-90, +/-180 etc), ajungem la 3 valori: -1, 1, 2, unde:
@@ -113,9 +117,11 @@ retine elementele din selectie, cele care vor ramane dupa aplicarea comenzii.
 Aceasta comanda a fost implementata conform formulei si metodei de aplicare
 a kernel-elor, folosind o matrice auxiliara pentru a nu altera valorile
 pixelilor vecini ai pixelului de la pasul curent.
+
 Pentru a putea face aceste operatii, a trebuit sa folosesc matrice auxiliare de
 dimensiuni 3x3 pentru a extrage valorile canalelor fiecari culori dupa
 unpacking.
+
 In final, rezultatele au fost _impachetate_ si au suprascris valorile vechi.
 
 ## SAVE
