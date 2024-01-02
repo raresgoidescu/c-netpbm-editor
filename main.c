@@ -57,18 +57,12 @@ void validate_coords(int coords[], int backupcoords[], img_data data)
 int main(void)
 {
 	char buffer[BUFFERMAX], cmd[200], path[200], save_path[200], param[200];
-
 	char magic_word[3];
 	int loaded = 0, colored, binary, ascii = 0, ok_load = 0, all, selected;
 	int astks = 0, bins = 0, angle = 0;
-	int coords[4], backupcoords[4];
-
-	int select_err = 0;
-
+	int coords[4], backupcoords[4], select_err = 0;
 	img_data data;
-	data.height = 0;
-	data.width = 0;
-	data.alpha = 0;
+	data.height = 0, data.width = 0, data.alpha = 0;
 
 	while (1) {
 		fgets(buffer, BUFFERMAX, stdin);
@@ -86,13 +80,9 @@ int main(void)
 		if (!strcmp(cmd, "LOAD")) {
 			if (ok_load) {
 				load_image(path, magic_word, &data, &colored, &binary);
-
-				selected = 0;
-				all = 1;
-
+				selected = 0, all = 1;
 				select_all(coords, data);
 				loaded = 1;
-				//printf("***\tl:%d b:%d c:%d\n", loaded, binary, colored);
 				//printf("***h:%6d w:%6d\n", data.height, data.width);
 			} else {
 				if (data.height)
@@ -109,8 +99,7 @@ int main(void)
 		} else if (!loaded) {
 			all = 1;
 			select_all(coords, data);
-			astks = 0;
-			bins = 0;
+			astks = 0, bins = 0;
 			puts("No image loaded");
 		} else if (!strcmp(cmd, "SELECT")) {
 			if (!select_err) {

@@ -61,118 +61,109 @@ int cmd_not_found(char *cmd)
 	return 1;
 }
 
+void planb(int *coords, int *bckup)
+{
+	for (int i = 0; i < 4; i++)
+		coords[i] = bckup[i];
+}
+
+void verify_selection_syntax(char *p, int coords[], int bckup[], int *selected,
+							 int *all, int *select_err, int *field)
+{
+	char delims[] = "\n ";
+	int k = -1;
+	while (p) {
+		if (!isalpha(p[0])) {
+			coords[++k] = atoi(p);
+		} else {
+			planb(coords, bckup);
+			// puts("Invalid command (letter found)");
+			puts("Invalid command");
+			*all = (*all == 1) ? 1 : 0;
+			*selected = (*selected == 1) ? 1 : 0;
+			*select_err = 1;
+			return;
+		}
+		(*field)++;
+		p = strtok(NULL, delims);
+	}
+	*select_err = 0;
+	if (*field != 5 && !(*select_err)) {
+		planb(coords, bckup);
+		*all = (*all == 1) ? 1 : 0;
+			*selected = (*selected == 1) ? 1 : 0;
+		// puts("Invalid command (not enough coords)");
+		puts("Invalid command");
+		*select_err = 1;
+		return;
+	}
+}
+
+void verify_histogram_syntax(char *p, int *astks, int *bins, int *field)
+{
+	char delims[] = "\n ";
+	if (!p) {
+		*astks = -1;
+		return;
+	}
+	*astks = atoi(p);
+	(*field)++;
+	p = strtok(NULL, delims);
+	if (!p) {
+		*astks = -1;
+		return;
+	}
+	*bins = atoi(p);
+	(*field)++;
+	p = strtok(NULL, delims);
+	if (p) {
+		*astks = -1, *bins = 0;
+		return;
+	}
+}
+
 /*****************************EXPORTED FUNCTIONS******************************/
 
 void parse(char *cmd, char *buffer, char *path, char *save_path, char *param,
 		   int *ascii, int *ok_load, int *coords, int *bckup, int *all,
 		   int *selected, int *astks, int *bins, int *angle, int *select_err)
 {
-	//int lenght = strlen(buffer) - 1;
-	//buffer[lenght] = '\0';
-
 	char delims[] = "\n ";
-
 	char *p = strtok(buffer, delims);
 	int field = 0;
 
 	while (p) {
 		if (field == 0) {
 			strcpy(cmd, p);
-
 			int cmd_found = cmd_not_found(cmd);
 			if (cmd_found == 0)
 				return;
-
 			field++;
 			p = strtok(NULL, delims);
 			continue;
 		}
-
 		if (field == 1) {
 			if (!strcmp(cmd, "EXIT")) {
 				return;
 			} else if (!strcmp(cmd, "LOAD")) {
 				strcpy(path, p);
-
 				int can_load = file_exists(path);
-				*ok_load = 0;
-
-				if (can_load) {
-					*ok_load = 1;
-					return;
-				}
-
+				*ok_load = (can_load) ? 1 : 0;
 				return;
 			} else if (!strcmp(cmd, "SELECT")) {
 				*selected = 1;
 				if (!strcmp(p, "ALL")) {
-					*all = 1;
-					field = 5;
+					*all = 1, field = 5;
 					break;
 				}
 				for (int i = 0; i < 4; i++)
 					bckup[i] = coords[i];
-
-				int k = -1;
-				while (p) {
-					if (!isalpha(p[0])) {
-						coords[++k] = atoi(p);
-					} else {
-						for (int i = 0; i < 4; i++)
-							coords[i] = bckup[i];
-						// puts("Invalid command (letter found)");
-						puts("Invalid command");
-
-						*all = (*all == 1) ? 1 : 0;
-						*selected = (*selected == 1) ? 1 : 0;
-
-						*select_err = 1;
-						return;
-					}
-
-					field++;
-					p = strtok(NULL, delims);
-				}
-
-				*select_err = 0;
-				//printf("** f: %d | err: %d **\n", field, *select_err);
-				if (field != 5 && !(*select_err)) {
-					for (int i = 0; i < 4; i++)
-						coords[i] = bckup[i];
-
-					*all = (*all == 1) ? 1 : 0;
-						*selected = (*selected == 1) ? 1 : 0;
-
-					// puts("Invalid command (not enough coords)");
-					puts("Invalid command");
-
-					*select_err = 1;
-					return;
-				}
-
-				*selected = 1;
-				*all = 0;
+				verify_selection_syntax(p, coords, bckup, selected, all,
+										select_err, &field);
+				*selected = 1, *all = 0;
 				break;
 			} else if (!strcmp(cmd, "HISTOGRAM")) {
-				if (!p) {
-					*astks = -1;
-					return;
-				}
-				*astks = atoi(p);
-				field++;
-				p = strtok(NULL, delims);
-				if (!p) {
-					*astks = -1;
-					return;
-				}
-				*bins = atoi(p);
-				field++;
-				p = strtok(NULL, delims);
-				if (p) {
-					*astks = -1;
-					*bins = 0;
-					return;
-				}
+				verify_histogram_syntax(p, astks, bins, &field);
 				break;
 			} else if (!strcmp(cmd, "EQUALIZE")) {
 				return;
@@ -194,18 +185,14 @@ void parse(char *cmd, char *buffer, char *path, char *save_path, char *param,
 				strcpy(save_path, p);
 				field++;
 				p = strtok(NULL, delims);
-
 				*ascii = want_ascii(p);
-
 				return;
 			}
 		}
-
 		field++;
 		p = strtok(NULL, delims);
 		continue;
 	}
-
 	if (!strcmp(cmd, "HISTOGRAM") && field == 1)
 		*astks = -1;
 }

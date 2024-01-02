@@ -22,9 +22,8 @@ unsigned int **allocate_matrix(int n, int m)
 		ptr[i] = malloc(m * sizeof(unsigned int));
 		handle_null_pointer(ptr[i]);
 		if (!ptr) {
-			for (int j = 0; j < i; j++) {
+			for (int j = 0; j < i; j++)
 				free(ptr[j]);
-			}
 			free(ptr);
 		}
 	}
