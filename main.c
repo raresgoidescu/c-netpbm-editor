@@ -71,7 +71,7 @@ int main(void)
 	int astks = 0, bins = 0, angle = 0;
 	int coords[4], backupcoords[4], select_err = 0;
 	img_data data;
-	data.height = 0, data.width = 0, data.alpha = 0;
+	data.height = 0, data.width = 0, data.alpha = 0, param[0] = '0';
 
 	while (1) {
 		fgets(buffer, BUFFERMAX, stdin);
@@ -92,7 +92,6 @@ int main(void)
 				selected = 0, all = 1;
 				select_all(coords, data); // Selectia default: integrala
 				loaded = 1; // Exista o imagine in memorie
-				//printf("***h:%6d w:%6d\n", data.height, data.width);
 			} else {
 				if (data.height)
 					deallocate_matrix(data.pixel_map, data.height);
@@ -103,7 +102,6 @@ int main(void)
 				binary = 0;
 				colored = 0;
 				selected = 0; // Ne intoarcem la stadiul initial
-				//printf("***\tl:%d b:%d c:%d\n", loaded, binary, colored);
 			}
 		} else if (!loaded) { // Verificam daca exista o imagine incarcata
 			all = 1;
@@ -133,6 +131,8 @@ int main(void)
 			if (param[0] != '0') // In caz ca avem un parametru
 				apply(&data, param,
 					  coords[0], coords[1], coords[2], coords[3], colored);
+			else
+				puts("Invalid command");
 		} else if (!strcmp(cmd, "ROTATE")) {
 			rotate(&data, &coords[0], &coords[1], &coords[2], &coords[3],
 				   angle);
