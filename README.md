@@ -1,7 +1,6 @@
 # C NetPBM Editor
 
 Welcome to the C NetPBM Editor! This project is a lightweight image processing tool written in C, designed to handle NetPBM (Portable Anymap) file formats. The primary focus of this editor is to provide basic image processing functionalities such as equalization, filtering, cropping,
----
 
 ## Table of Contents
 
