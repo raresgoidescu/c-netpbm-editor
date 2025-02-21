@@ -1,0 +1,11 @@
+/input
+/output
+/ref
+/tests
+/target
+/images
+check
+checker.sh
+tests.json
+image_check
+image_editor
